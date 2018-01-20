@@ -41,7 +41,6 @@ return [
                 'application/json' => 'yii\web\JsonParser',
             ],
         ],
-
         'response' => [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
