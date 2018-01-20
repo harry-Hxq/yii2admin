@@ -14,23 +14,23 @@
         <!-- END SIDEBAR TOGGLER BUTTON -->
     </li>
     <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
-    <li class="sidebar-search-wrapper">
+<!--    <li class="sidebar-search-wrapper">-->
         <!-- BEGIN RESPONSIVE QUICK SEARCH FORM 栏目搜索 -->
-        <form class="sidebar-search sidebar-search-bordered" action="" method="GET">
-            <a href="javascript:;" class="remove">
-                <i class="icon-close"></i>
-            </a>
-            <div class="input-group">
-                <input name="s" type="text" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                    <a href="javascript:;" class="btn submit">
-                        <i class="icon-magnifier"></i>
-                    </a>
-                </span>
-            </div>
-        </form>
+<!--        <form class="sidebar-search sidebar-search-bordered" action="" method="GET">-->
+<!--            <a href="javascript:;" class="remove">-->
+<!--                <i class="icon-close"></i>-->
+<!--            </a>-->
+<!--            <div class="input-group">-->
+<!--                <input name="s" type="text" class="form-control" placeholder="Search...">-->
+<!--                <span class="input-group-btn">-->
+<!--                    <a href="javascript:;" class="btn submit">-->
+<!--                        <i class="icon-magnifier"></i>-->
+<!--                    </a>-->
+<!--                </span>-->
+<!--            </div>-->
+<!--        </form>-->
         <!-- END RESPONSIVE QUICK SEARCH FORM -->
-    </li>
+<!--    </li>-->
     
     <?php if(!empty($allMenu['child']) && is_array($allMenu['child'])):?>
     <?php foreach ($allMenu['child'] as $menu): ?>

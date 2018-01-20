@@ -43,7 +43,13 @@ class User extends \common\modelsgii\User implements IdentityInterface,RateLimit
     {
         /* 这里为了简便将数据库token字段设置成username */
         /* 使用 /api/v1/user?access-token=e282486518 即可访问 */
-        return static::findOne(['username' => $token, 'status' => self::STATUS_ACTIVE]);
+
+        // 如果token无效的话，
+        if(!static::apiTokenIsValid($token)) {
+            throw new \yii\web\UnauthorizedHttpException("token is invalid.");
+        }
+
+        return static::findOne(['api_token' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -127,6 +133,53 @@ class User extends \common\modelsgii\User implements IdentityInterface,RateLimit
         $this->allowance_updated_at = $timestamp;
         $this->save();
     }
+
+    /**
+     * ---------------------------------------
+     * 生成 api_token
+     * ---------------------------------------
+     */
+    public function generateApiToken()
+    {
+        $this->api_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * ---------------------------------------
+     * 校验api_token是否有效
+     * ---------------------------------------
+     */
+    public static function apiTokenIsValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.apiTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public static function findByUsername ($username)
+    {
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * 验证密码
+     *
+     * @param string $password password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+
 
 
 

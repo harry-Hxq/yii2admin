@@ -37,7 +37,34 @@ return [
         'request' => [
             'class' => 'common\core\Request',
             'baseUrl' => Yii::getAlias('@apiUrl'),
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
+
+        'response' => [
+            'class' => 'yii\web\Response',
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                if ($response->data !== null && !empty(Yii::$app->request->get('suppress_response_code'))) {
+                    $response->data = [
+                        'success' => $response->isSuccessful,
+                        'data' => $response->data,
+                        'error' => ''
+                    ];
+                    $response->statusCode = 200;
+                }else{
+                    $response->data = [
+                        'success' => false,
+                        'data' => '',
+                        'error' => $response->data
+                    ];
+                    $response->statusCode = 200;
+                }
+                $response->format = yii\web\Response::FORMAT_JSON;
+            },
+        ],
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -57,6 +84,9 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['index','v1/user','v2/index'],
                     'pluralize' => false, //是否启用复数形式，注意index的复数indices，我认为开启后不直观
+//                    'extraPatterns' => [
+//                        'POST login' => 'login'
+//                    ]
                 ]
 
             ],

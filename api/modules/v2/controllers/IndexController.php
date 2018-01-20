@@ -30,8 +30,7 @@ class IndexController extends ActiveController
         return $behaviors;
     }
     public function actionIndex(){
-        var_dump(111);
-        exit(111);
+
     }
 
 }
