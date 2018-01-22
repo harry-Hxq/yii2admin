@@ -32,7 +32,8 @@ class UserController extends ActiveController
             'class' => QueryParamAuth::className(),
             'optional' => [
                 'login',
-                'user-profile'
+                'user-profile',
+                'logout'
             ]
         ];
         return $behaviors;
@@ -46,12 +47,14 @@ class UserController extends ActiveController
         $model->setAttributes(Yii::$app->request->post());
         if ($user = $model->login()) {
             if ($user instanceof IdentityInterface) {
-                return $user->api_token;
+                return ['code' => 200, 'msg' => 'ok' ,'data' => $user->api_token];
             } else {
-                return $user->errors;
+                $errors = ($model->errors);
+                return ['code' => -1, 'msg' => current(current($errors)) ,'data' => null];
             }
         } else {
-            return $model->errors;
+            $errors = ($model->errors);
+            return ['code' => -1, 'msg' => current(current($errors)) ,'data' => null];
         }
     }
 
@@ -61,11 +64,28 @@ class UserController extends ActiveController
     public function actionUserProfile ($token)
     {
         $user = User::findIdentityByAccessToken($token);
-        return [
-            'id' => $user->uid,
-            'username' => $user->username,
-            'email' => $user->email,
-        ];
+        if($user){
+            $userInfo =  [
+                'id' => $user->uid,
+                'username' => $user->username,
+                'email' => $user->email,
+            ];
+            return ['code' => 200, 'msg' => 'ok' ,'data' =>  $userInfo];
+        }
+        return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
+
+    }
+
+    /**
+     * 退出
+     */
+    public function actionLogout ($token)
+    {
+        $user = User::logoutByToken($token);
+        if($user){
+            return ['code' => 200, 'msg' => 'ok' ,'data' => true];
+        }
+        return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
     }
 
 }

@@ -179,6 +179,19 @@ class User extends \common\modelsgii\User implements IdentityInterface,RateLimit
         return Yii::$app->security->validatePassword($password, $this->password);
     }
 
+    /**
+     * 退出
+     */
+    public static function logoutByToken($token)
+    {
+        $user =  static::findOne(['api_token' => $token, 'status' => self::STATUS_ACTIVE]);
+        if($user){
+            $user -> api_token = '';
+            $user -> save();
+            return $user;
+        }
+    }
+
 
 
 
