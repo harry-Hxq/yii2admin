@@ -18,10 +18,7 @@ use yii\widgets\ActiveForm;
 ]); ?>
 <div class="row">
     <div class="col-md-2">
-    <?= $form->field($model, 'username')->textInput()->label('用户名') ?>
-    </div>
-    <div class="col-md-1">
-    <?=$form->field($model, 'status')->dropDownList([''=>'全部',0=>'禁用',1=>'正常'],['class'=>'form-control'])->label('状态'); ?>
+    <?= $form->field($model, 'title')->textInput()->label('标题') ?>
     </div>
 
     <div class="col-md-2">

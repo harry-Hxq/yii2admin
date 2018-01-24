@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-/* @var $model common\modelsgii\User */
+/* @var $model common\modelsgii\Route */
 /* @var $dataProvider yii\data\ActiveDataProvider  */
-/* @var $searchModel backend\models\search\UserSearch */
+/* @var $searchModel backend\models\search\RouteSearch */
 
 /* ===========================以下为本页配置信息================================= */
 /* 页面基本属性 */
-$this->title = '用户管理';
-$this->params['title_sub'] = '管理用户信息';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
+$this->title = '路线管理';
+$this->params['title_sub'] = '管理路线信息';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
 
 /* 加载页面级别资源 */
 \backend\assets\TablesAsset::register($this);
@@ -25,75 +25,49 @@ $columns = [
         }
     ],
     [
-        'header' => 'UID',
-        'attribute' => 'uid',
-        'options' => ['width' => '50px;']
-    ],
-    [
-        'header' => '用户名',
-        'attribute' => 'username',
+        'header' => '标题',
+        'attribute' => 'title',
         'options' => ['width' => '150px;']
     ],
     [
-        'header' => '邮箱',
-        'attribute' => 'email',
-        'options' => ['width' => '150px;']
-    ],
-    [
-        'header' => '手机',
-        'attribute' => 'mobile',
-        'options' => ['width' => '100px;']
-    ],
-    [
-        'header' => '最后登录时间',
-        'attribute' => 'last_login_time',
+        'header' => '开始时间',
+        'attribute' => 'start_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
-        'header' => '最后登录IP',
-        'attribute' => 'last_login_ip',
-        'options' => ['width' => '120px;'],
-        'content' => function($model){
-            return long2ip($model['last_login_ip']);
-        }
+        'header' => '结束时间',
+        'attribute' => 'end_time',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
-        'header' => '当前积分',
-        'attribute' => 'score',
-        'options' => ['width' => '80px;'],
+        'header' => '备注',
+        'attribute' => 'remark',
+        'options' => ['width' => '150px;']
     ],
     [
-        'header' => '总积分',
-        'attribute' => 'score_all',
-        'options' => ['width' => '80px;'],
+        'header' => '创建时间',
+        'attribute' => 'create_time',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
-        'header' => '状态',
-        'attribute' => 'status',
-        'options' => ['width' => '50px;'],
-        'content' => function($model){
-            return $model['status'] ?
-                Html::tag('span','正常',['class'=>'badge badge-success']) :
-                Html::tag('span','禁用',['class'=>'badge badge-important']);
-        }
+        'header' => '更新时间',
+        'attribute' => 'update_time',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
         'class' => 'yii\grid\ActionColumn',
         'header' => '操作',
-        'template' => '{edit} {tuijian} {delete}',
+        'template' => '{edit} {delete}',
         //'options' => ['width' => '200px;'],
         'buttons' => [
             'edit' => function ($url, $model, $key) {
                 return Html::a('<i class="fa fa-edit"></i> 编辑', ['edit','uid'=>$key], [
                     'title' => Yii::t('app', '编辑'),
                     'class' => 'btn btn-xs purple'
-                ]);
-            },
-            'tuijian' => function ($url, $model, $key) {
-                return Html::a('<i class="fa fa-jpy"></i> 推荐', ['order/index', 'tuid'=>$key], [
-                    'title' => Yii::t('app', '推荐人订单查询'),
-                    'class' => 'btn btn-xs red'
                 ]);
             },
             'delete' => function ($url, $model, $key) {
@@ -115,18 +89,6 @@ $columns = [
         <div class="actions">
             <div class="btn-group btn-group-devided">
                 <?=Html::a('添加 <i class="icon-plus"></i>',['add'],['class'=>'btn green'])?>
-                <?=Html::a('所有用户 <i class="icon-user"></i>',['','is_all'=>'1'],['class'=>'btn green'])?>
-            </div>
-            <div class="btn-group">
-                <button class="btn blue btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                    工具箱
-                    <i class="fa fa-angle-down"></i>
-                </button>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="javascript:;"><i class="fa fa-pencil"></i> 导出Excel </a></li>
-                    <li class="divider"> </li>
-                    <li><a href="javascript:;"> 其他 </a></li>
-                </ul>
             </div>
         </div>
     </div>
