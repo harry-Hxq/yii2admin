@@ -4,6 +4,7 @@ namespace api\modules\v1\controllers;
 
 use api\models\LoginForm;
 use api\models\User;
+use common\modelsgii\UserTip;
 use yii\base\Exception;
 use yii\rest\ActiveController;
 use yii\filters\auth\QueryParamAuth;
@@ -33,7 +34,8 @@ class UserController extends ActiveController
             'optional' => [
                 'login',
                 'user-profile',
-                'logout'
+                'logout',
+                'tip'
             ]
         ];
         return $behaviors;
@@ -84,6 +86,31 @@ class UserController extends ActiveController
         $user = User::logoutByToken($token);
         if($user){
             return ['code' => 200, 'msg' => 'ok' ,'data' => true];
+        }
+        return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
+    }
+
+    /**
+     * 获取提醒记录
+     */
+    public function actionTip ($token,$num=5,$page=1)
+    {
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+            $tipModel = UserTip::find()->where(['uid' => $user -> uid]);
+            $tipInfo  = $tipModel ->limit($num)->offset(($page-1)*$num)->orderBy('create_time desc')->asArray()->all();
+            $total = $tipModel -> count();
+            $list = [];
+            if($tipInfo){
+                foreach ($tipInfo as $k => $v){
+                    $list[] = [
+                        'route_id' =>  $v['route_id'],
+                        'create_time' =>  intval($v['create_time']),
+                    ];
+                }
+            }
+            unset($tipInfo);
+            return ['code' => 200, 'msg' => 'ok' ,'data' =>  ['list' => $list,'total' => intval($total)]];
         }
         return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
     }
