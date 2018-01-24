@@ -9,8 +9,8 @@ use yii\grid\GridView;
 
 /* ===========================以下为本页配置信息================================= */
 /* 页面基本属性 */
-$this->title = '路线管理';
-$this->params['title_sub'] = '管理路线信息';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
+$this->title = '用户提醒管理';
+$this->params['title_sub'] = '用户提醒管理';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
 
 /* 加载页面级别资源 */
 \backend\assets\TablesAsset::register($this);
@@ -25,21 +25,15 @@ $columns = [
         }
     ],
     [
-        'header' => '标题',
-        'attribute' => 'title',
+        'header' => '用户名',
+        'attribute' => 'username',
+        'options' => ['width' => '150px;'],
+        'value' => 'username'
+    ],
+    [
+        'header' => '路线',
+        'attribute' => 'route_id',
         'options' => ['width' => '150px;']
-    ],
-    [
-        'header' => '开始时间',
-        'attribute' => 'start_time',
-        'options' => ['width' => '150px;'],
-        'format' => ['date', 'php:Y-m-d H:i']
-    ],
-    [
-        'header' => '结束时间',
-        'attribute' => 'end_time',
-        'options' => ['width' => '150px;'],
-        'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
         'header' => '备注',
@@ -57,41 +51,10 @@ $columns = [
         'attribute' => 'update_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
-    ],
-    [
-        'class' => 'yii\grid\ActionColumn',
-        'header' => '操作',
-        'template' => '{edit} {delete}',
-        //'options' => ['width' => '200px;'],
-        'buttons' => [
-            'edit' => function ($url, $model, $key) {
-                return Html::a('<i class="fa fa-edit"></i> 编辑', ['edit','uid'=>$key], [
-                    'title' => Yii::t('app', '编辑'),
-                    'class' => 'btn btn-xs purple'
-                ]);
-            },
-            'delete' => function ($url, $model, $key) {
-                return Html::a('<i class="fa fa-times"></i>', ['delete', 'id'=>$key], [
-                    'title' => Yii::t('app', '删除'),
-                    'class' => 'btn btn-xs red ajax-get confirm'
-                ]);
-            }
-        ],
-    ],
+    ]
 ];
 ?>
 <div class="portlet light portlet-fit portlet-datatable bordered">
-    <div class="portlet-title">
-        <div class="caption">
-            <i class="icon-settings font-dark"></i>
-            <span class="caption-subject font-dark sbold uppercase">管理信息</span>
-        </div>
-        <div class="actions">
-            <div class="btn-group btn-group-devided">
-                <?=Html::a('添加 <i class="icon-plus"></i>',['add'],['class'=>'btn green'])?>
-            </div>
-        </div>
-    </div>
     <div class="portlet-body">
         <?php \yii\widgets\Pjax::begin(['options'=>['id'=>'pjax-container']]); ?>
         <div>
@@ -129,7 +92,7 @@ $columns = [
 <!-- 定义数据块 -->
 <?php $this->beginBlock('test'); ?>
 jQuery(document).ready(function() {
-    highlight_subnav('route/index'); //子导航高亮
+    highlight_subnav('user-stop-log/index'); //子导航高亮
 });
 <?php $this->endBlock() ?>
 <!-- 将数据块 注入到视图中的某个位置 -->

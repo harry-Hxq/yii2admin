@@ -6,10 +6,10 @@ use Yii;
 
 /*
  * ---------------------------------------
- * 用户停车模型
+ * 用户提现模型
  * ---------------------------------------
  */
-class UserStopLog extends \common\modelsgii\UserStopLog
+class UserTip extends \common\modelsgii\UserTip
 {
     public $username;
     /**

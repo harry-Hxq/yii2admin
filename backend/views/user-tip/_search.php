@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 ]); ?>
 <div class="row">
     <div class="col-md-2">
-    <?= $form->field($model, 'username')->textInput()->label('用户UID') ?>
+    <?= $form->field($model, 'username')->textInput()->label('用户名') ?>
     </div>
 
     <div class="col-md-2">

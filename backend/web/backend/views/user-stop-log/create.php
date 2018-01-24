@@ -2,15 +2,15 @@
 
 use yii\helpers\Html;
 
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\UserStopLog */
 
-$this->title = 'Update User Stop Log: {nameAttribute}';
+$this->title = 'Create User Stop Log';
 $this->params['breadcrumbs'][] = ['label' => 'User Stop Logs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-stop-log-update">
+<div class="user-stop-log-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
