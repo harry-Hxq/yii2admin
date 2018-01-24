@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `yii2_user_recharge` (
   `uid` int(10) DEFAULT NULL COMMENT 'uid',
   `openid` VARCHAR(255) DEFAULT NULL DEFAULT '' COMMENT 'openid',
   `out_trade_no` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '商户订单号',
-  `total_fee` INT(11) NOT NULL DEFAULT '' COMMENT '总金额',
+  `total_fee` INT(11) NOT NULL DEFAULT 0 COMMENT '总金额',
   `spbill_create_ip` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '终端IP',
   `time_start` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '交易起始时间',
   `time_expire` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '交易结束时间',
@@ -92,5 +92,7 @@ CREATE TABLE IF NOT EXISTS `yii2_user_recharge` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `uid_index`(`uid`),
+  KEY `uid_openid`(`openid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='用户充值记录';
