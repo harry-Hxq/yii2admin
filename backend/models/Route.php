@@ -36,9 +36,9 @@ class Route extends \common\modelsgii\Route
     public function rules()
     {
         return [
-            [['title','start_time','end_time'], 'required'],
+            [['title','start_time','end_time','latitude','longitude'], 'required'],
             [['remark'], 'string', 'max' => 255],
-            [['title'], 'string', 'max' => 32,'min' => 3]
+            [['title'], 'string', 'max' => 32,'min' => 3],
         ];
     }
     

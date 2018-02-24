@@ -7,7 +7,7 @@ use Yii;
 use backend\models\search\UserStopLogSearch;
 
 /**
- * 用户提现记录控制器
+ * 用户提醒记录控制器
  * @author longfei <phphome@qq.com>
  */
 class UserTipController extends BaseController
