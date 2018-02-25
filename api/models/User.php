@@ -2,6 +2,7 @@
 
 namespace api\models;
 
+use function EasyWeChat\Payment\get_client_ip;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\filters\RateLimitInterface;
@@ -166,6 +167,38 @@ class User extends \common\modelsgii\User implements IdentityInterface,RateLimit
     public static function findByUsername ($username)
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * 获取用户信息(byopenid)
+     */
+    public static function findByOpenid ($openid)
+    {
+        $user = static::findOne(['openid' => $openid, 'status' => self::STATUS_ACTIVE]);
+        if($user){
+            return $user;
+        }else{
+
+            $userModel = new User();
+
+            $userModel ->username = Yii::$app->security->generateRandomString(4);
+            $userModel ->password = '$2y$13$oO.xRlrKjMMF/bykb7476.zBIH2RkR6rtv8j5jrYgSxi71AvV3lFG';
+            $userModel ->salt     = 'kXGkWeNSeoK7vakqRfUAviocq-5uy0cN';
+            $userModel ->email    = 'phphome@qq.com';
+            $userModel ->reg_time = time();
+            $userModel ->reg_ip   = get_client_ip();
+            $userModel ->last_login_time = time();
+            $userModel ->last_login_ip = get_client_ip();
+            $userModel ->status   = 1;
+            $userModel ->openid   = $openid;
+            $userModel ->is_vip   = 0;
+            $userModel ->free_times   = Yii::$app->params['FREE_TIMES'];
+
+            if($userModel -> save(false)){
+                return static::findOne(['openid' => $openid, 'status' => self::STATUS_ACTIVE]);
+            }
+
+        }
     }
 
     /**

@@ -202,5 +202,29 @@ class FuncHelper
             echo implode("\n",$data);
         }
     }
-    
+
+    /**
+     * 计算两个坐标之间的距离(米)
+     * @param float $fP1Lat 起点(纬度)
+     * @param float $fP1Lon 起点(经度)
+     * @param float $fP2Lat 终点(纬度)
+     * @param float $fP2Lon 终点(经度)
+     * @return int
+     */
+    public static function distanceBetween($fP1Lat, $fP1Lon, $fP2Lat, $fP2Lon){
+        $fEARTH_RADIUS = 6378137;
+        //角度换算成弧度
+        $fRadLon1 = deg2rad($fP1Lon);
+        $fRadLon2 = deg2rad($fP2Lon);
+        $fRadLat1 = deg2rad($fP1Lat);
+        $fRadLat2 = deg2rad($fP2Lat);
+        //计算经纬度的差值
+        $fD1 = abs($fRadLat1 - $fRadLat2);
+        $fD2 = abs($fRadLon1 - $fRadLon2);
+        //距离计算
+        $fP = pow(sin($fD1/2), 2) +
+            cos($fRadLat1) * cos($fRadLat2) * pow(sin($fD2/2), 2);
+        return intval($fEARTH_RADIUS * 2 * asin(sqrt($fP)) + 0.5);
+    }
+
 }

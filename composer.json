@@ -31,7 +31,8 @@
         "kucha/ueditor": "*",
         "yiisoft/yii2-httpclient": "^2.0",
         "e282486518/yii2-console-migration": "*",
-        "vlucas/phpdotenv": "^2.4"
+        "vlucas/phpdotenv": "^2.4",
+        "overtrue/wechat": "~3.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

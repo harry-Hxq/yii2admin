@@ -23,6 +23,10 @@ use Yii;
  * @property string $score
  * @property string $score_all
  * @property integer $status
+ * @property integer $free_times
+ * @property integer $is_vip
+ * @property integer $openid
+ * @property integer $plate_num
  */
 class User extends \common\core\BaseActiveRecord
 {
@@ -74,6 +78,9 @@ class User extends \common\core\BaseActiveRecord
             'score' => 'Score',
             'score_all' => 'Score All',
             'status' => 'Status',
+            'openid' => 'Openid',
+            'free_times' => 'Free Times',
+            'is_vip' => 'Is Vip',
         ];
     }
 }
