@@ -41,7 +41,10 @@ class UserController extends ActiveController
                 'oauth-callback',
                 'user-profile',
                 'logout',
-                'tip'
+                'tip',
+                'stop-log',
+                'bind-user-info',
+                'stop-car'
             ]
         ];
         return $behaviors;
@@ -151,13 +154,10 @@ class UserController extends ActiveController
 
 
     /**
-     * 获取提醒记录
+     * 停车记录
      */
-    public function actionStopLog ()
+    public function actionStopLog ($token,$num=5,$page=1)
     {
-        $token = Yii::$app->request->post('api-token');
-        $page = Yii::$app->request->post('page');
-        $num = Yii::$app->request->post('num');
         $user = User::findIdentityByAccessToken($token);
         if($user){
             $UserStopModel = UserStopLog::find()->where(['uid' => $user -> uid]);
@@ -167,8 +167,9 @@ class UserController extends ActiveController
             if($StopInfo){
                 foreach ($StopInfo as $k => $v){
                     $list[] = [
-                        'remark' =>  $v['remark'],
+                        'location' =>  $v['remark'],
                         'create_time' =>  intval($v['create_time']),
+                        'car_num' =>  $user->plate_num,
                     ];
                 }
             }
@@ -184,7 +185,7 @@ class UserController extends ActiveController
      */
     public function actionStopCar ()
     {
-        $token = Yii::$app->request->post('api-token');
+        $token = Yii::$app->request->post('token');
         $lat = Yii::$app->request->post('lat');
         $lng = Yii::$app->request->post('lng');
         $location = Yii::$app->request->post('location');
@@ -196,7 +197,7 @@ class UserController extends ActiveController
             if(!$user -> is_vip){
                 // 判断是否存在免费次数
                 if($user -> free_times <=0 ){
-                    return ['code' => -1, 'msg' => '你的体验次数已经用完，请升级为vip用户即可免费继续体验' ,'data' => null];
+                    return ['code' => 201, 'msg' => '你的体验次数已经用完，请升级为vip用户即可免费继续体验' ,'data' => null];
                 }
 
                 //免费次数减一
@@ -246,14 +247,17 @@ class UserController extends ActiveController
      */
     public function actionBindUserInfo ()
     {
-        $token = Yii::$app->request->post('api-token');
+        $token = Yii::$app->request->post('token');
         $plate_num = Yii::$app->request->post('plate_num','');
-        $mobile = Yii::$app->request->post('mobile');
+        $mobile = Yii::$app->request->post('mobile','');
         $user = User::findIdentityByAccessToken($token);
         if($user){
-
-            $user -> plate_num = $plate_num;
-            $user -> mobile = $mobile;
+            if(!empty($plate_num)){
+                $user -> plate_num = $plate_num;
+            }
+            if(!empty($mobile)){
+                $user -> mobile = $mobile;
+            }
             $user -> update_time = time();
             $user -> save(false);
 

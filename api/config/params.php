@@ -9,4 +9,5 @@ return [
     ],
     'DEFAULT_TARGET_URL' => 'http://localhost:8300/stopCar',
     'FREE_TIMES' => 3, //首个微信用户的免费次数
+    'DISTANCE' => 500, //默认距离（米）
 ];
