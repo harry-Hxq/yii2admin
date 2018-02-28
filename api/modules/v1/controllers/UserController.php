@@ -44,7 +44,8 @@ class UserController extends ActiveController
                 'tip',
                 'stop-log',
                 'bind-user-info',
-                'stop-car'
+                'stop-car',
+                'create-menu'
             ]
         ];
         return $behaviors;
@@ -229,11 +230,11 @@ class UserController extends ActiveController
                         $userTip -> create_time = $now;
                         $userTip -> save();
 
-                        return ['code' => 200, 'msg' => '距离近'];break;
+                        return ['code' => 200, 'msg' => '附近存在交警执勤，当前位置停车不安全'];break;
                     }
                 }
             }else{
-                return ['code' => -1, 'msg' => '未查到' ,'data' => null];
+                return ['code' => 202, 'msg' => '当前位置可安全停车' ,'data' => null];
             }
 
         }
@@ -267,6 +268,14 @@ class UserController extends ActiveController
         return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
     }
 
+
+    /**
+     * 生成菜单
+     */
+    public function actionCreateMenu(){
+        $wechatModel = new WxLoginForm();
+        var_dump($wechatModel ->CreateMenu());
+    }
 
 
 

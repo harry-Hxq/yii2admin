@@ -103,6 +103,32 @@ class WxLoginForm extends Model
         }
     }
 
+    public function CreateMenu(){
+        $data = [
+            [
+                "type" =>"view",
+                "name"=>"成为会员",
+                "url"=>"http://www.guoyanchao.xyz/becomeMember"
+            ], [
+                "type" =>"view",
+                "name"=>"停车",
+                "url"=>"http://www.guoyanchao.xyz/stopCar"
+            ], [
+                "type" =>"view",
+                "name"=>"我",
+                "url"=>"http://www.guoyanchao.xyz/uc"
+            ]
+
+        ];
+        $options = [
+            'app_id' => Yii::$app->params['WECHAT']['APPID'],
+            'secret' => Yii::$app->params['WECHAT']['APPSECRET'],
+        ];
+        $this->wechat = new Application($options);
+        $res = $this->wechat -> menu -> add($data);
+        return $res;
+    }
+
 
 
 
