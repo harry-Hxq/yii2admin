@@ -194,6 +194,9 @@ class User extends \common\modelsgii\User implements IdentityInterface,RateLimit
             $userModel ->is_vip   = 0;
             $userModel ->free_times   = Yii::$app->params['FREE_TIMES'];
 
+            $userModel ->allowance   = 0;
+            $userModel ->allowance_updated_at   = 0;
+
             if($userModel -> save(false)){
                 return static::findOne(['openid' => $openid, 'status' => self::STATUS_ACTIVE]);
             }
