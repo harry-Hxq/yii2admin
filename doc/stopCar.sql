@@ -83,7 +83,10 @@ CREATE TABLE IF NOT EXISTS `yii2_user_recharge` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `uid` int(10) DEFAULT NULL COMMENT 'uid',
   `openid` VARCHAR(255) DEFAULT NULL DEFAULT '' COMMENT 'openid',
+  `wx_order_id` VARCHAR(255) DEFAULT NULL DEFAULT '' COMMENT '微信orderId',
+  `order_id` VARCHAR(255) DEFAULT NULL DEFAULT '' COMMENT '本地orderId',
   `out_trade_no` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '商户订单号',
+  `wx_order_info_prepare` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '订单信息',
   `total_fee` INT(11) NOT NULL DEFAULT 0 COMMENT '总金额',
   `spbill_create_ip` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '终端IP',
   `time_start` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '交易起始时间',
@@ -96,3 +99,6 @@ CREATE TABLE IF NOT EXISTS `yii2_user_recharge` (
   KEY `uid_index`(`uid`),
   KEY `uid_openid`(`openid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='用户充值记录';
+ALTER TABLE yii2_user_recharge add COLUMN order_id VARCHAR(255) DEFAULT 0 NOT NULL COMMENT '本地orderid';
+ALTER TABLE yii2_user_recharge add COLUMN wx_order_id VARCHAR(255) DEFAULT 0 NOT NULL COMMENT '微信orderid';
+ALTER TABLE yii2_user_recharge add COLUMN wx_order_info_prepare VARCHAR(500) DEFAULT 0 NOT NULL COMMENT '订单信息';

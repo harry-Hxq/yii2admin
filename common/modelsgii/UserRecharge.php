@@ -22,6 +22,9 @@ use Yii;
  */
 class UserRecharge extends \common\core\BaseActiveRecord
 {
+
+    const STATUS_PAID_SUCCESSFULLY = 1;
+    const STATUS_PAID_FAILED = 0;
     /**
      * @inheritdoc
      */
