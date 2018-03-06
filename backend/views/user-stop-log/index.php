@@ -32,13 +32,22 @@ $columns = [
     ],
     [
         'header' => '位置',
-        'attribute' => 'latitude',
+        'attribute' => 'remark',
         'options' => ['width' => '150px;']
     ],
     [
-        'header' => '备注',
-        'attribute' => 'remark',
-        'options' => ['width' => '150px;']
+        'header' => '停车状态',
+        'options' => ['width' => '150px;'],
+        'content' => function($model){
+             return Yii::$app->params['STOP_CAR_STATUS'][$model['status']];
+        }
+    ],
+    [
+        'header' => '是否提醒',
+        'options' => ['width' => '150px;'],
+        'content' => function($model){
+             return Yii::$app->params['STOP_IS_TIP'][$model['is_tip']];
+        }
     ],
     [
         'header' => '创建时间',
@@ -51,7 +60,23 @@ $columns = [
         'attribute' => 'update_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
-    ]
+    ],
+    [
+        'class' => 'yii\grid\ActionColumn',
+        'header' => '操作',
+        'template' => '{tip}',
+        'options' => ['width' => '200px;'],
+        'buttons' => [
+            'tip' => function ($url, $model, $key) {
+                if($model['status'] == 2 && $model['is_tip'] == 1){
+                    return Html::a('提醒',  $url, [
+                        'title' => Yii::t('app', '提醒'),
+                        'class' => 'btn btn-xs purple ajax-get',
+                    ]);
+                }
+            }
+        ],
+    ],
 ];
 ?>
 <div class="portlet light portlet-fit portlet-datatable bordered">

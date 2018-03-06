@@ -30,6 +30,5 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
-composer.lock
 .env
 

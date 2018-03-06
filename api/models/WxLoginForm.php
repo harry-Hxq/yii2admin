@@ -42,6 +42,7 @@ class WxLoginForm extends Model
         $this->wechat = new Application($options);
         $oauth = $this->wechat->oauth;
         $user = $oauth->user();
+        # todo 获取微信昵称
         return $user -> id;
     }
 

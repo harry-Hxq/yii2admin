@@ -62,7 +62,8 @@ class UserStopLogSearch extends UserStopLog
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'yii2_user.username', $this->username]);
+        $query->andFilterWhere(['like', 'yii2_user.username', trim($this->username)]);
+        $query->andFilterWhere(['yii2_user_stop_log.status' =>  $this->status]);
 
         return $dataProvider;
     }

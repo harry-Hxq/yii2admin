@@ -18,7 +18,13 @@ use yii\widgets\ActiveForm;
 ]); ?>
 <div class="row">
     <div class="col-md-2">
-    <?= $form->field($model, 'username')->textInput()->label('用户UID') ?>
+    <?= $form->field($model, 'username')->textInput()->label('用户名') ?>
+    </div>
+    <div class="col-md-1">
+        <?=$form->field($model, 'status')->dropDownList([''=>'全部',1=>'已结束',2=>'停车中'],['class'=>'form-control'])->label('停车状态'); ?>
+    </div>
+    <div class="col-md-1">
+        <?=$form->field($model, 'is_tip')->dropDownList([''=>'全部',1=>'未提醒',2=>'已提醒'],['class'=>'form-control'])->label('提醒状态'); ?>
     </div>
 
     <div class="col-md-2">

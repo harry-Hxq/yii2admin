@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `yii2_user` (
 ALTER TABLE yii2_user ADD COLUMN plate_num VARCHAR(50) NOT NULL DEFAULT '' COMMENT '车牌号';
 ALTER TABLE yii2_user ADD COLUMN openid VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'openid';
 ALTER TABLE yii2_user ADD COLUMN subsribe TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否关注 1关注 2未关注';
+ALTER TABLE yii2_user ADD COLUMN stopCarStatus TINYINT(1) NOT NULL DEFAULT 1 COMMENT '用户停车状态 1未停车 2停车中';
 
 --
 -- 行程表的结构 `yii2_route`
@@ -61,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `yii2_user_stop_log` (
   `status` tinyint(4) DEFAULT '0' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='用户停车记录';
+ALTER TABLE yii2_user_stop_log ADD COLUMN is_tip TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否提醒过用户 1未提醒 2已提醒';
 
 --
 -- 提醒用户记录 `yii2_user_tip`

@@ -186,7 +186,7 @@ class UserController extends ActiveController
 
 
     /**
-     * 用户停车(一开始有免费停车次数，当停车次数用完，需要充值成为会员才可以继续使用)
+     * 用户停车
      */
     public function actionStopCar ()
     {
@@ -200,14 +200,13 @@ class UserController extends ActiveController
 
             //判断当前用户是否是vip
             if(!$user -> is_vip){
-                // 判断是否存在免费次数
-                if($user -> free_times <=0 ){
-                    return ['code' => 201, 'msg' => '你的体验次数已经用完，请升级为vip用户即可免费继续体验' ,'data' => null];
-                }
+                 return ['code' => 201, 'msg' => '您当前为普通用户' ,'data' => null];
+            }
 
-                //免费次数减一
-                $user -> free_times --;
-                $user ->save(false);
+            // 判断是否存在还在停车中的记录
+            $isStoping = UserStopLog::find()->where(['uid' => $user -> uid,'status' => 2])->one();
+            if($isStoping){
+                return ['code' => 203, 'msg' => '还存在停车未结束的记录' ,'data' => null];
             }
 
             // 记录停车记录
@@ -217,6 +216,7 @@ class UserController extends ActiveController
             $userStopCarLog -> longitude = $lng;
             $userStopCarLog -> remark = $location;
             $userStopCarLog -> create_time = $now;
+            $userStopCarLog -> status = 2; //停车中
             $userStopCarLog -> save();
 
             //判断附近是否存
@@ -234,12 +234,68 @@ class UserController extends ActiveController
                         $userTip -> create_time = $now;
                         $userTip -> save();
 
+                        // 改变用车的状态为停车中。。。
+                        $user -> stop_car_status = 2; //停车中
+                        $user -> save(false);
+
                         return ['code' => 200, 'msg' => '附近存在交警执勤，当前位置停车不安全'];break;
                     }
                 }
             }else{
-                return ['code' => 202, 'msg' => '当前位置可安全停车' ,'data' => null];
+                // 改变用车的状态为停车中。。。
+                $user -> stop_car_status = 1; //停车中
+                $user -> save(false);
+                return ['code' => 202, 'msg' => '暂时安全' ,'data' => null];
             }
+
+        }
+
+        return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
+    }
+
+    /**
+     * 结束停车
+     */
+    public function actionEndStopCar ()
+    {
+        $token = Yii::$app->request->post('token');
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+
+            // 结束正在停车中的状态
+            $isStoping = UserStopLog::find()->where(['uid' => $user -> uid,'status' => 2])->one();
+            if($isStoping){
+                $isStoping -> status = 1; //停车结束
+                $isStoping -> update_time = time();
+                $isStoping -> save(false);
+
+                return ['code' => 200, 'msg' => 'ok','data' => null];
+            }
+
+            return ['code' => -1, 'msg' => '系统错误','data' => null];
+
+        }
+        return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
+    }
+
+    /**
+     * 提醒滚动列表
+     */
+    public function actionStopTipList ()
+    {
+        $token = Yii::$app->request->post('token');
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+
+            $final_data = [
+                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
+                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
+                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
+                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
+                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
+            ];
+
+            return ['code' => 200, 'msg' => 'ok','data' => $final_data];
 
         }
         return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
