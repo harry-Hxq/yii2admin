@@ -422,9 +422,10 @@ class UserController extends ActiveController
      */
     public function actionPayConfig(){
         $token = Yii::$app->request->get('token');
+        $url = Yii::$app->request->get('url');
         $user = User::findIdentityByAccessToken($token);
         if($user){
-            return $this->_pay_config($user);
+            return $this->_pay_config($user,$url);
         }
 
     }
@@ -443,9 +444,9 @@ class UserController extends ActiveController
     /**
      * 创建本地订单
      */
-    private function _pay_config($user) {
+    private function _pay_config($user,$url) {
 
-        $wx_config = Wechat::construct_wx();
+        $wx_config = Wechat::construct_wx($url);
 
         return ["code"=>200, "msg"=>'ok', "data"=>$wx_config];
 

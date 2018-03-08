@@ -39,7 +39,7 @@ class Wechat
 
 
 
-    public static function construct_wx()
+    public static function construct_wx($url)
     {
 
         $options = [
@@ -50,7 +50,7 @@ class Wechat
 
         $app = new Application($options);
 
-        $js_config = $app->js->config([''],true,false,false);
+        $js_config = $app->js->setUrl($url)->config([''],true,false,false);
 
         return $js_config;
     }
