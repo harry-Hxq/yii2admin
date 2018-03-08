@@ -26,7 +26,7 @@ class Wechat
                 'key' => Yii::$app->params['WX_PAY']['WX_PAY_KEY_FOR_SIGN'],
                 'cert_path' => Yii::$app->params['WX_PAY']['WX_CERT_PATH'],
                 'key_path' => Yii::$app->params['WX_PAY']['WX_KEY_PATH'],
-                'notify_url' => Yii::$app->request->hostInfo . Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL']
+                'notify_url' => Yii::$app->request->hostInfo ."/api/v1/user/". Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL']
             ],
         ];
 

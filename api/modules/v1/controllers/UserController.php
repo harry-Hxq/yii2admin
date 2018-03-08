@@ -49,7 +49,8 @@ class UserController extends ActiveController
                 'bind-user-info',
                 'stop-car',
                 'create-menu',
-                'notify'
+                'notify',
+                'pay'
             ]
         ];
         return $behaviors;
@@ -404,7 +405,7 @@ class UserController extends ActiveController
      * 微信支付
      */
     public function actionPay(){
-        $token = Yii::$app->request->post('token');
+        $token = Yii::$app->request->get('token');
         $user = User::findIdentityByAccessToken($token);
         if($user){
             $this->_pay_with_wechat($user);
@@ -438,7 +439,7 @@ class UserController extends ActiveController
                 'detail'           => '停车服务年费',
                 'out_trade_no'     => $order_id,
                 'total_fee'        => 100, // 单位：固定1元，使用分为单位
-                'notify_url'       => Yii::$app->request->hostInfo.Yii::$app->params['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'notify_url'       => Yii::$app->request->hostInfo.Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'openid'           => $user['openid'], // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             ];
             $order = new Order($attributes);
@@ -454,7 +455,7 @@ class UserController extends ActiveController
             $wx_order = new UserRecharge();
             $wx_order->order_id = $order_id;
             $wx_order->wx_order_id = $wx_order_id;
-            $wx_order->openid = $user['uid'];
+            $wx_order->openid = $user['openid'];
             $wx_order->wx_order_info_prepare = json_encode($result);
             $wx_order->status = 1;
             $wx_order->create_time = time();
