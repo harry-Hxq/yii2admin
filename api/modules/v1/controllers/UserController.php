@@ -505,18 +505,18 @@ class UserController extends ActiveController
 
             $wx_order_id = $result->prepay_id;
 
-            $wx_order = new UserRecharge();
-            $wx_order->order_id = $order_id;
-            $wx_order->wx_order_id = $wx_order_id;
-            $wx_order->openid = $user['openid'];
-            $wx_order->wx_order_info_prepare = json_encode($result);
-            $wx_order->status = 2;
-            $wx_order->create_time = time();
-            $is_saved = $wx_order->save();
-            if(!$is_saved) {
-                throw new Exception('Fail to save the wx order.');
-            }
+            $wx_order = UserRecharge::find()->where(['order_id' => $order_id])->one();
+            if($wx_order){
 
+                $wx_order->wx_order_id = $wx_order_id;
+                $wx_order->wx_order_info_prepare = json_encode($result);
+                $wx_order->status = 2;
+                $wx_order->update_time = time();
+                $is_saved = $wx_order->save();
+                if(!$is_saved) {
+                    throw new Exception('Fail to save the wx order.');
+                }
+            }
             $transaction->commit();
 
             $final_data = [
