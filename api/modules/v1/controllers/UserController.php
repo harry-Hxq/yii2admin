@@ -408,7 +408,7 @@ class UserController extends ActiveController
         $token = Yii::$app->request->get('token');
         $user = User::findIdentityByAccessToken($token);
         if($user){
-            $this->_pay_with_wechat($user);
+            return $this->_pay_with_wechat($user);
         }
 
     }
