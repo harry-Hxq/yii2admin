@@ -50,7 +50,9 @@ class UserController extends ActiveController
                 'stop-car',
                 'create-menu',
                 'notify',
-                'pay'
+                'pay',
+                'pay-config',
+                'pay-local-order',
             ]
         ];
         return $behaviors;
@@ -114,6 +116,7 @@ class UserController extends ActiveController
                 'mobile' => $user->mobile,
                 'free_times' => $user->free_times,
                 'is_vip' => $user->is_vip,
+                'openid' => $user->openid,
             ];
             return ['code' => 200, 'msg' => 'ok' ,'data' =>  $userInfo];
         }
@@ -406,14 +409,65 @@ class UserController extends ActiveController
      */
     public function actionPay(){
         $token = Yii::$app->request->get('token');
+        $order_id = Yii::$app->request->get('order_id');
         $user = User::findIdentityByAccessToken($token);
         if($user){
-            return $this->_pay_with_wechat($user);
+            return $this->_pay_with_wechat($user,$order_id);
         }
 
     }
 
-    private function _pay_with_wechat($user) {
+    /**
+     * 微信支付配置
+     */
+    public function actionPayConfig(){
+        $token = Yii::$app->request->get('token');
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+            return $this->_pay_config($user);
+        }
+
+    }
+
+    /**
+     * 支付配置
+     */
+    public function actionPayLocalOrder(){
+        $token = Yii::$app->request->get('token');
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+            return $this->_pay_local_order($user);
+        }
+
+    }
+    /**
+     * 创建本地订单
+     */
+    private function _pay_config($user) {
+
+        $wx_config = Wechat::construct_wx();
+
+        return ["code"=>200, "msg"=>'ok', "data"=>$wx_config];
+
+    }
+    private function _pay_local_order($user) {
+        $order_id = Wechat::genOrderId($user['openid']); // 本地的open id
+        $wx_order = new UserRecharge();
+        $wx_order->order_id = $order_id;
+        $wx_order->wx_order_id = '';
+        $wx_order->openid = $user['openid'];
+        $wx_order->status = 1;
+        $wx_order->create_time = time();
+        $is_save = $wx_order->save();
+
+        if($is_save){
+            return ["code"=>200, "msg"=>'ok', "data"=>$order_id];
+        }
+
+
+
+    }
+    private function _pay_with_wechat($user,$order_id) {
 
         $db = Yii::$app->db;
         $transaction = $db->beginTransaction();
@@ -431,7 +485,6 @@ class UserController extends ActiveController
             }
             // 生成一个微信订单
             $wx_payment = Wechat::construct_wx_payment();
-            $order_id = Wechat::genOrderId($user['uid']); // 本地的open id
 
             $attributes = [
                 'trade_type'       => 'JSAPI', // JSAPI，NATIVE，APP...
@@ -457,7 +510,7 @@ class UserController extends ActiveController
             $wx_order->wx_order_id = $wx_order_id;
             $wx_order->openid = $user['openid'];
             $wx_order->wx_order_info_prepare = json_encode($result);
-            $wx_order->status = 1;
+            $wx_order->status = 2;
             $wx_order->create_time = time();
             $is_saved = $wx_order->save();
             if(!$is_saved) {
@@ -541,7 +594,6 @@ class UserController extends ActiveController
             return ["code"=>-1, "msg"=>'系统错误'];
         }
     }
-
 
 
 

@@ -38,6 +38,24 @@ class Wechat
     }
 
 
+
+    public static function construct_wx()
+    {
+
+        $options = [
+
+            "app_id" => Yii::$app->params['WX_PAY']['WX_PAY_APP_ID'],
+            "secret" => Yii::$app->params['WX_PAY']['WX_PAY_APP_SECRET'],
+        ];
+
+        $app = new Application($options);
+
+        $js_config = $app->js->config([''],true,false,false);
+
+        return $js_config;
+    }
+
+
     public static function construct_enterprise_payment()
     {
 
