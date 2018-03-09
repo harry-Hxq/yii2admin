@@ -20,6 +20,6 @@ return [
         'WX_PAY_KEY_FOR_SIGN' => env('WX_PAY_KEY_FOR_SIGN','wx9c044f98156b8e20'),
         'WX_CERT_PATH' =>  env('WX_CERT_PATH','/home/deploy/check_in_backend/pay/apiclient_cert.pem'),
         'WX_KEY_PATH' =>  env('WX_KEY_PATH','/home/deploy/check_in_backend/pay/apiclient_key.pem'),
-        'PAY_NOTIFY_URL' => env('PAY_NOTIFY_URL','/index.php?r=activity/notify'),
+        'PAY_NOTIFY_URL' => env('PAY_NOTIFY_URL','/api/v1/user/notify'),
     ]
 ];

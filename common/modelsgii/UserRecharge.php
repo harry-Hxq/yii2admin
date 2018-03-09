@@ -23,8 +23,10 @@ use Yii;
 class UserRecharge extends \common\core\BaseActiveRecord
 {
 
-    const STATUS_PAID_SUCCESSFULLY = 1;
-    const STATUS_PAID_FAILED = 0;
+    const STATUS_PAID_LOCAL = 1; //订单本地状态
+    const STATUS_PAID_WECHAT = 2; //订单微信状态
+    const STATUS_PAID_FAILED = 3; //订单失败
+    const STATUS_PAID_SUCCESS = 4; //订单成功
     /**
      * @inheritdoc
      */

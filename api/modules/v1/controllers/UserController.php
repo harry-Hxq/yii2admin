@@ -359,7 +359,7 @@ class UserController extends ActiveController
             try{
 
                 // # 锁住这些记录
-                $raw_sql = sprintf("select * from `check_wx_order` where order_id = '%s' and status = %d for update;", $notify->out_trade_no, 1); //未支付的订单
+                $raw_sql = sprintf("select * from `yii2_user_recharge` where wx_order_id = '%s' and status = %d for update;", $notify->out_trade_no, UserRecharge::STATUS_PAID_WECHAT); //未支付的订单
                 $wx_order = $db->createCommand($raw_sql)->queryOne();
                 if(!$wx_order) {
                     Yii::warning(sprintf("Fail to get the wx order with id (%d) at %s.\n", $notify->out_trade_no, $date),__METHOD__);
@@ -371,7 +371,7 @@ class UserController extends ActiveController
                 if (!$successful) {
 
                     // 改变这个订单的状态为支付失败
-                    $sql = sprintf("update check_wx_order set status = %d where order_id = '%s';",3, $notify->out_trade_no);
+                    $sql = sprintf("update yii2_user_recharge set status = %d where wx_order_id = '%s';",UserRecharge::STATUS_PAID_WECHAT, $notify->out_trade_no);
                     $db->createCommand($sql)->execute();
 
                     Yii::error(sprintf("failed to pay for order id %d in data(%s)",$notify->out_trade_no,$date),__METHOD__);
@@ -380,12 +380,9 @@ class UserController extends ActiveController
                 }else{
 
                     // 改变这个订单的状态为支付成功
-                    $sql = sprintf("update check_wx_order set status = %d where order_id = '%s';",2, $notify->out_trade_no);
+                    $sql = sprintf("update yii2_user_recharge set status = %d where wx_order_id = '%s';",UserRecharge::STATUS_PAID_SUCCESS, $notify->out_trade_no);
                     $db->createCommand($sql)->execute();
 
-                    // 该用户的状态为已报名
-                    $sql = sprintf("update check_user set status = %d where id = &d;",2, $wx_order['fans_id']);
-                    $db->createCommand($sql)->execute();
 
                     Yii::info(sprintf("success to pay for order id %d in data(%s)",$notify->out_trade_no,$date),__METHOD__);
                     return true;
@@ -457,7 +454,7 @@ class UserController extends ActiveController
         $wx_order->order_id = $order_id;
         $wx_order->wx_order_id = '';
         $wx_order->openid = $user['openid'];
-        $wx_order->status = 1;
+        $wx_order->status = UserRecharge::STATUS_PAID_LOCAL; //订单本地状态
         $wx_order->create_time = time();
         $is_save = $wx_order->save();
 
@@ -493,7 +490,7 @@ class UserController extends ActiveController
                 'detail'           => '停车服务年费',
                 'out_trade_no'     => $order_id,
                 'total_fee'        => 100, // 单位：固定1元，使用分为单位
-                'notify_url'       => Yii::$app->request->hostInfo.Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'notify_url'       => Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'openid'           => $user['openid'], // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             ];
             $order = new Order($attributes);
@@ -511,7 +508,7 @@ class UserController extends ActiveController
 
                 $wx_order->wx_order_id = $wx_order_id;
                 $wx_order->wx_order_info_prepare = json_encode($result);
-                $wx_order->status = 2;
+                $wx_order->status = UserRecharge::STATUS_PAID_WECHAT; //订单微信状态
                 $wx_order->update_time = time();
                 $is_saved = $wx_order->save();
                 if(!$is_saved) {
