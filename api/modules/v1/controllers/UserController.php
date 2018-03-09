@@ -359,7 +359,7 @@ class UserController extends ActiveController
             try{
 
                 // # 锁住这些记录
-                $raw_sql = sprintf("select * from `yii2_user_recharge` where wx_order_id = '%s' and status = %d for update;", $notify->out_trade_no, UserRecharge::STATUS_PAID_WECHAT); //未支付的订单
+                $raw_sql = sprintf("select * from `yii2_user_recharge` where order_id = '%s' and status = %d for update;", $notify->out_trade_no, UserRecharge::STATUS_PAID_WECHAT); //未支付的订单
                 $wx_order = $db->createCommand($raw_sql)->queryOne();
                 if(!$wx_order) {
                     Yii::warning(sprintf("Fail to get the wx order with id (%d) at %s.\n", $notify->out_trade_no, $date),__METHOD__);
@@ -371,7 +371,7 @@ class UserController extends ActiveController
                 if (!$successful) {
 
                     // 改变这个订单的状态为支付失败
-                    $sql = sprintf("update yii2_user_recharge set status = %d where wx_order_id = '%s';",UserRecharge::STATUS_PAID_WECHAT, $notify->out_trade_no);
+                    $sql = sprintf("update yii2_user_recharge set status = %d where order_id = '%s';",UserRecharge::STATUS_PAID_WECHAT, $notify->out_trade_no);
                     $db->createCommand($sql)->execute();
 
                     Yii::error(sprintf("failed to pay for order id %d in data(%s)",$notify->out_trade_no,$date),__METHOD__);
@@ -380,7 +380,7 @@ class UserController extends ActiveController
                 }else{
 
                     // 改变这个订单的状态为支付成功
-                    $sql = sprintf("update yii2_user_recharge set status = %d where wx_order_id = '%s';",UserRecharge::STATUS_PAID_SUCCESS, $notify->out_trade_no);
+                    $sql = sprintf("update yii2_user_recharge set status = %d where order_id = '%s';",UserRecharge::STATUS_PAID_SUCCESS, $notify->out_trade_no);
                     $db->createCommand($sql)->execute();
 
 
@@ -494,7 +494,6 @@ class UserController extends ActiveController
                 'openid'           => $user['openid'], // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             ];
             $order = new Order($attributes);
-
             $result = $wx_payment->prepare($order);
             if ($result->return_code != 'SUCCESS' or $result->result_code != 'SUCCESS'){
                 $err_msg = sprintf("Fail to get pre pay order id with response(%s)", json_encode($result));
