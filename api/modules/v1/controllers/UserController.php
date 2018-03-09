@@ -451,6 +451,7 @@ class UserController extends ActiveController
     private function _pay_local_order($user) {
         $order_id = Wechat::genOrderId($user['openid']); // 本地的open id
         $wx_order = new UserRecharge();
+        $wx_order->uid = $user['uid'];
         $wx_order->order_id = $order_id;
         $wx_order->wx_order_id = '';
         $wx_order->openid = $user['openid'];
