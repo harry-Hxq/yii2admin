@@ -6,6 +6,7 @@ use function EasyWeChat\Payment\get_client_ip;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\filters\RateLimitInterface;
+use common\helpers\StringHelper;
 
 /**
  * 实现User组件中的身份识别类 参见 yii\web\user
@@ -172,33 +173,33 @@ class User extends \common\modelsgii\User implements IdentityInterface,RateLimit
     /**
      * 获取用户信息(byopenid)
      */
-    public static function findByOpenid ($openid)
+    public static function findByOpenid ($wxUserInfo)
     {
-        $user = static::findOne(['openid' => $openid, 'status' => self::STATUS_ACTIVE]);
+        $user = static::findOne(['openid' => $wxUserInfo ->id, 'status' => self::STATUS_ACTIVE]);
         if($user){
             return $user;
         }else{
 
             $userModel = new User();
 
-            $userModel ->username = Yii::$app->security->generateRandomString(4);
-            $userModel ->password = '$2y$13$oO.xRlrKjMMF/bykb7476.zBIH2RkR6rtv8j5jrYgSxi71AvV3lFG';
-            $userModel ->salt     = 'kXGkWeNSeoK7vakqRfUAviocq-5uy0cN';
-            $userModel ->email    = 'phphome@qq.com';
-            $userModel ->reg_time = time();
-            $userModel ->reg_ip   = get_client_ip();
-            $userModel ->last_login_time = time();
-            $userModel ->last_login_ip = get_client_ip();
-            $userModel ->status   = 1;
-            $userModel ->openid   = $openid;
-            $userModel ->is_vip   = 0;
-            $userModel ->free_times   = Yii::$app->params['FREE_TIMES'];
+            $userModel -> username = StringHelper::replace_emoji($wxUserInfo -> nickname);
+            $userModel -> password = '$2y$13$oO.xRlrKjMMF/bykb7476.zBIH2RkR6rtv8j5jrYgSxi71AvV3lFG';
+            $userModel -> salt     = 'kXGkWeNSeoK7vakqRfUAviocq-5uy0cN';
+            $userModel -> email    = 'phphome@qq.com';
+            $userModel -> reg_time = time();
+            $userModel -> reg_ip   = get_client_ip();
+            $userModel -> last_login_time = time();
+            $userModel -> last_login_ip = get_client_ip();
+            $userModel -> status   = 1;
+            $userModel -> openid   = $wxUserInfo -> id;
+            $userModel -> is_vip   = 0;
+            $userModel -> headimg   = $wxUserInfo -> avatar;
 
-            $userModel ->allowance   = 0;
-            $userModel ->allowance_updated_at   = 0;
+            $userModel -> allowance   = 0;
+            $userModel -> allowance_updated_at   = 0;
 
             if($userModel -> save(false)){
-                return static::findOne(['openid' => $openid, 'status' => self::STATUS_ACTIVE]);
+                return static::findOne(['openid' => $wxUserInfo -> id, 'status' => self::STATUS_ACTIVE]);
             }
 
         }

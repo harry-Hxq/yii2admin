@@ -27,6 +27,8 @@ use Yii;
  * @property integer $is_vip
  * @property integer $openid
  * @property integer $plate_num
+ * @property integer $reg_vip_time
+ * @property integer $headimg
  */
 class User extends \common\core\BaseActiveRecord
 {

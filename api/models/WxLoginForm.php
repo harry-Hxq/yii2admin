@@ -34,7 +34,10 @@ class WxLoginForm extends Model
         return $oauth->redirect()->send();
     }
 
-    public function getOpenid(){
+    /**
+     * 获取微信用户昵称和头像还有openid
+     */
+    public function getWxUserInfo(){
         $options = [
             'app_id' => Yii::$app->params['WECHAT']['APPID'],
             'secret' => Yii::$app->params['WECHAT']['APPSECRET'],
@@ -42,8 +45,7 @@ class WxLoginForm extends Model
         $this->wechat = new Application($options);
         $oauth = $this->wechat->oauth;
         $user = $oauth->user();
-        # todo 获取微信昵称
-        return $user -> id;
+        return $user;
     }
 
     public function init ()
@@ -68,9 +70,9 @@ class WxLoginForm extends Model
      *
      * @return boolean whether the user is logged in successfully
      */
-    public function loginByOpenid($openid)
+    public function loginByOpenid($wxUserInfo)
     {
-        if ($this->getUserByOpenid($openid)) {
+        if ($this->getUserByOpenid($wxUserInfo)) {
             $this->trigger(self::GET_API_TOKEN);
             return $this->_user;
         } else {
@@ -83,10 +85,10 @@ class WxLoginForm extends Model
      *
      * @return User|null
      */
-    protected function getUserByOpenid($openid)
+    protected function getUserByOpenid($wxUserInfo)
     {
         if ($this->_user === null) {
-            $this->_user = User::findByOpenid($openid);
+            $this->_user = User::findByOpenid($wxUserInfo);
         }
 
         return $this->_user;

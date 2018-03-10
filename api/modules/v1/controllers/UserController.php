@@ -93,8 +93,8 @@ class UserController extends ActiveController
     public function actionOauthCallback(){
         $targetUrl = Yii::$app->request->get('targetUrl',Yii::$app->params['DEFAULT_TARGET_URL']);
         $model = new WxLoginForm();
-        $openid = $model -> getopenid();
-        if($user = $model -> loginByOpenid($openid)){
+        $wxUserInfo = $model -> getWxUserInfo();
+        if($user = $model -> loginByOpenid($wxUserInfo)){
             if ($user instanceof IdentityInterface) {
                 header("location:".$targetUrl.'?api_token='.$user->api_token);
             }
@@ -114,9 +114,11 @@ class UserController extends ActiveController
                 'id' => $user->uid,
                 'plate_num' => $user->plate_num,
                 'mobile' => $user->mobile,
-                'free_times' => $user->free_times,
                 'is_vip' => $user->is_vip,
                 'openid' => $user->openid,
+                'deadline' => min(intval(strtotime(date("Y-m-d",$user->reg_vip_time) + (86400 * 365) - time()) / 86400),1),
+                'headimg' => $user->headimg,
+                'username' => $user->username,
             ];
             return ['code' => 200, 'msg' => 'ok' ,'data' =>  $userInfo];
         }
@@ -382,6 +384,10 @@ class UserController extends ActiveController
                     // 改变这个订单的状态为支付成功
                     $sql = sprintf("update yii2_user_recharge set status = %d where order_id = '%s';",UserRecharge::STATUS_PAID_SUCCESS, $notify->out_trade_no);
                     $db->createCommand($sql)->execute();
+
+                    // 改变用户为vip会员，
+                    $updateUserSql =  sprintf("update yii2_user set is_vip = %d,reg_vip_time = %d where uid = %d;",1, time(),$wx_order['uid']);
+                    $db->createCommand($updateUserSql)->execute();
 
 
                     Yii::info(sprintf("success to pay for order id %d in data(%s)",$notify->out_trade_no,$date),__METHOD__);

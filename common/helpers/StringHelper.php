@@ -36,4 +36,19 @@ class StringHelper extends \yii\helpers\StringHelper{
         }
         return $suffix ? $slice.'...' : $slice;
     }
+    /**
+     * 过滤emoji表情
+     * @param string $str
+     * @return string
+     */
+    public static function replace_emoji($str){
+        $str = preg_replace_callback(
+            '/./u',
+            function (array $match) {
+                return strlen($match[0]) >= 4 ? '' : $match[0];
+            },
+            $str);
+
+        return $str;
+    }
 }
