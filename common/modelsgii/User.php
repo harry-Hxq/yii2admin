@@ -29,6 +29,7 @@ use Yii;
  * @property integer $plate_num
  * @property integer $reg_vip_time
  * @property integer $headimg
+ * @property integer $stop_car_status
  */
 class User extends \common\core\BaseActiveRecord
 {

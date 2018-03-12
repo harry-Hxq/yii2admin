@@ -53,6 +53,7 @@ class UserController extends ActiveController
                 'pay',
                 'pay-config',
                 'pay-local-order',
+                'end-stop-car',
             ]
         ];
         return $behaviors;
@@ -119,6 +120,7 @@ class UserController extends ActiveController
                 'deadline' => min(intval(strtotime(date("Y-m-d",$user->reg_vip_time) + (86400 * 365) - time()) / 86400),1),
                 'headimg' => $user->headimg,
                 'username' => $user->username,
+                'stop_car_status' => $user->stop_car_status,
             ];
             return ['code' => 200, 'msg' => 'ok' ,'data' =>  $userInfo];
         }
@@ -225,6 +227,11 @@ class UserController extends ActiveController
             $userStopCarLog -> status = 2; //停车中
             $userStopCarLog -> save();
 
+            $user -> stop_car_status = 2; //停车中
+            $user -> update_time = time();
+
+            $user -> save(false);
+
             //判断附近是否存
             $res = Route::find()->where(['>','start_time',$now])->andWhere(['>','end_time',$now])->asArray()->all();
             if($res){
@@ -240,17 +247,10 @@ class UserController extends ActiveController
                         $userTip -> create_time = $now;
                         $userTip -> save();
 
-                        // 改变用车的状态为停车中。。。
-                        $user -> stop_car_status = 2; //停车中
-                        $user -> save(false);
-
                         return ['code' => 200, 'msg' => '附近存在交警执勤，当前位置停车不安全'];break;
                     }
                 }
             }else{
-                // 改变用车的状态为停车中。。。
-                $user -> stop_car_status = 1; //停车中
-                $user -> save(false);
                 return ['code' => 202, 'msg' => '暂时安全' ,'data' => null];
             }
 
@@ -274,6 +274,10 @@ class UserController extends ActiveController
                 $isStoping -> status = 1; //停车结束
                 $isStoping -> update_time = time();
                 $isStoping -> save(false);
+
+                // 改变用车的状态为停车结束
+                $user -> stop_car_status = 1; //停车结束
+                $user -> save(false);
 
                 return ['code' => 200, 'msg' => 'ok','data' => null];
             }
