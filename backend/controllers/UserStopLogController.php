@@ -82,7 +82,8 @@ class UserStopLogController extends BaseController
 
             $wechat = Wechat::wxInit();
             $staff =  $wechat -> staff;
-            $message = new Text(['content' => '新罗停车无忧提醒您，您当前停车位置有交警执勤，请您尽快挪车']);
+            $content = "新罗停车无忧提醒您，您当前停车位置（".$UserStopLog -> remark."）可能有被贴罚单的风险，请您尽快挪车。";
+            $message = new Text(['content' => $content]);
             $res = $staff->message($message)->to($user -> openid)->send();
             if(!$res){
                 $transaction -> rollBack();
