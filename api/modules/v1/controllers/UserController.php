@@ -11,6 +11,7 @@ use backend\models\UserTip;
 use common\helpers\FuncHelper;
 use common\helpers\Wechat;
 use common\modelsgii\UserRecharge;
+use EasyWeChat\Message\Text;
 use EasyWeChat\Payment\Order;
 use yii\base\Exception;
 use yii\rest\ActiveController;
@@ -54,6 +55,7 @@ class UserController extends ActiveController
                 'pay-config',
                 'pay-local-order',
                 'end-stop-car',
+                'wx-index',
             ]
         ];
         return $behaviors;
@@ -338,15 +340,6 @@ class UserController extends ActiveController
         return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
     }
 
-
-    /**
-     * 生成菜单
-     */
-    public function actionCreateMenu(){
-        $wechatModel = new WxLoginForm();
-        var_dump($wechatModel ->CreateMenu());
-    }
-
     /**
      * 微信支付成功回调页
      */
@@ -500,7 +493,7 @@ class UserController extends ActiveController
                 'body'             => '停车服务年费',
                 'detail'           => '停车服务年费',
                 'out_trade_no'     => $order_id,
-                'total_fee'        => 100, // 单位：固定1元，使用分为单位
+                'total_fee'        => 10, // 单位：固定1元，使用分为单位
                 'notify_url'       => Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'openid'           => $user['openid'], // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             ];
@@ -603,8 +596,120 @@ class UserController extends ActiveController
         }
     }
 
+    /**
+     * 微信服务器访问接口
+     */
+    public function actionWxIndex(){
+
+        $echoStr = Yii::$app->request->get("echostr",null);
+
+        if ($this->_checkSignature()) {
+
+            if(!is_null($echoStr)){
+                echo $echoStr;exit;
+            }
+            $this->_requestMsg();
+            exit;
+        }
+    }
 
 
+    private function _checkSignature() {
+        $token_info = Yii::$app->params['WECHAT']['TOKEN'];
+        $signature = Yii::$app->request->get("signature");
+        $timestamp = Yii::$app->request->get("timestamp");
+        $nonce = Yii::$app->request->get("nonce");
+        $token = $token_info->token;
+        $tmpArr = array($token, $timestamp, $nonce);//C('token')
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
+        if ($tmpStr == $signature) {
+            return true;
+        } else {
+            echo $token;
+            return false;
+        }
+    }
 
+    public function _requestMsg()
+    {
+
+        $wechat = Wechat::wxInit();
+        $wechat->server->setMessageHandler(function ($message) {
+
+            Yii::info(sprintf("MsgType(%s).Event(%s).user(%s).Key(%s).Msg(%s)",$message->MsgType,$message->Event,$message->FromUserName,$message->EventKey,$message->Content),__METHOD__);
+            switch ($message->MsgType) {
+                case 'event':
+                    if ($message->Event == "subscribe") {
+                        $content = "1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />"."2.很有效的规避罚单，省时省钱。"."<br />"."1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />";
+                        return new Text(['content'=>$content]);
+                    } elseif ($message->Event == "unsubscribe") {
+
+                    } elseif ($message->Event == "CLICK") {
+
+                    } elseif ($message->Event == "VIEW") {
+
+                    }
+                    break;
+                case 'text':
+                    $content = "1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />"."2.很有效的规避罚单，省时省钱。"."<br />"."1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />";
+                    return new Text(['content'=>$content]);
+                    break;
+                case 'image':
+                    break;
+                case 'voice':
+                    # 语音消息...
+                    break;
+                case 'video':
+                    # 视频消息...
+                    break;
+                case 'location':
+                    # 坐标消息...
+                    break;
+                case 'link':
+                    # 链接消息...
+                    break;
+                // ... 其它消息
+                default:
+                    break;
+            }
+            // ...
+        });
+
+        $wechat->server->serve()->send();
+    }
+
+    public function actionCreateMenu(){
+        $data = [
+            [
+                "name"=>"会员服务",
+                "sub_button"=>[
+                    [
+                        "type" => "view",
+                        "name" => "服务内容",
+                        "url" => "https://www.xltcwy.cn/memberText1"
+                    ],
+                    [
+                        "type" => "view",
+                        "name" => "成为会员",
+                        "url" => "https://m.liechengcf.com/immigrant-index"
+                    ]
+                ]
+            ],
+            [
+                "type" =>"view",
+                "name"=>"停车位置",
+                "url"=>"https://www.xltcwy.cn/stopCar"
+            ],
+            [
+                "type" =>"view",
+                "name"=>"个人中心",
+                "url"=>"https://www.xltcwy.cn/uc"
+            ],
+        ];
+        $wechat = Wechat::wxInit();
+        $wechat -> menu -> add($data);
+    }
 
 }

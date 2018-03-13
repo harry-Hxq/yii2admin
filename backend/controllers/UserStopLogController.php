@@ -2,8 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\User;
 use backend\models\UserStopLog;
 use backend\models\UserTip;
+use common\helpers\Wechat;
+use EasyWeChat\Message\Text;
 use Yii;
 use backend\models\search\UserStopLogSearch;
 use yii\web\NotFoundHttpException;
@@ -49,23 +52,49 @@ class UserStopLogController extends BaseController
             throw new NotFoundHttpException('已经提醒了，就不要继续提醒.');
         }
 
-        // 改变记录为已提醒
-        $UserStopLog -> is_tip = 2;
-        $UserStopLog -> update_time = time();
-        $UserStopLog -> save();
+        $user = User::find()->where(['uid' => $UserStopLog->uid]) ->one();
+        if(!$user){
+            throw new NotFoundHttpException('用户不存在');
+        }
 
-        // 新增提醒记录
-        $UserTip = new UserTip();
-        $UserTip -> uid = $UserStopLog -> uid;
-        $UserTip -> route_id = $UserStopLog -> id;
-        $UserTip -> remark = $UserStopLog -> remark;
-        $UserTip -> create_time = time();
-        $UserTip -> status = 1; //提醒成功，用户未挪车
-        $UserTip -> save();
 
-        # todo 发送微信信息，发送短信通知用户挪车，停车中的状态且应该挪车
+        $db = Yii::$app->db;
+        $transaction = $db->beginTransaction();
 
-        $this->success('提醒成功', '/admin/user-stop-log');
+        try {
+            // 改变记录为已提醒
+            $UserStopLog -> is_tip = 2;
+            $UserStopLog -> update_time = time();
+            if(!$UserStopLog -> save()){
+                $transaction -> rollBack();
+            }
+
+            // 新增提醒记录
+            $UserTip = new UserTip();
+            $UserTip -> uid = $UserStopLog -> uid;
+            $UserTip -> route_id = $UserStopLog -> id;
+            $UserTip -> remark = $UserStopLog -> remark;
+            $UserTip -> create_time = time();
+            $UserTip -> status = 1; //提醒成功，用户未挪车
+            if(!$UserTip -> save()){
+                $transaction -> rollBack();
+            }
+
+            $wechat = Wechat::wxInit();
+            $staff =  $wechat -> staff;
+            $message = new Text(['content' => '新罗停车无忧提醒您，您当前停车位置有交警执勤，请您尽快挪车']);
+            $res = $staff->message($message)->to($user -> openid)->send();
+            if(!$res){
+                $transaction -> rollBack();
+            }
+            $transaction -> commit();
+
+            $this->success('提醒成功', '/admin/user-stop-log');
+        }catch (\Exception $e){
+            $transaction -> rollBack();
+            throw new NotFoundHttpException('系统错误');
+        }
+
 
     }
 

@@ -6,6 +6,7 @@ return [
     'WECHAT' => [
         'APPID' =>  env('APP_ID','wx9c044f98156b8e20'),
         'APPSECRET' => env('APP_SECRET','3fd73bb4cd76af92528e3c393435e2ab'),
+        'TOKEN' => env('TOKEN','harrytoken'),
     ],
     'DEFAULT_TARGET_URL' =>env('DEFAULT_TARGET_URL','http://localhost:8300/stopCar'),
     'FREE_TIMES' => 3, //首个微信用户的免费次数
