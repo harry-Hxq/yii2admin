@@ -44,10 +44,10 @@ class Wechat
 
         $options = [
 
-            "app_id" => Yii::$app->params['WX_PAY']['WX_PAY_APP_ID'],
-            "secret" => Yii::$app->params['WX_PAY']['WX_PAY_APP_SECRET'],
-            'token'   => Yii::$app->params['WX_PAY']['TOKEN'],        // Token
-            'aes_key' => Yii::$app->params['WX_PAY']['ENCODINGAESKEY'], // EncodingAESKey，安全模式与兼容模式下请一定要填写！！！
+            "app_id" => Yii::$app->params['WECHAT']['APPID'],
+            "secret" => Yii::$app->params['WECHAT']['APPSECRET'],
+            'token'   => Yii::$app->params['WECHAT']['TOKEN'],        // Token
+            'aes_key' => Yii::$app->params['WECHAT']['ENCODINGAESKEY'], // EncodingAESKey，安全模式与兼容模式下请一定要填写！！！
 
         ];
 
