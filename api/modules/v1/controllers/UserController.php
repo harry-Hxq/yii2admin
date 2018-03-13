@@ -682,19 +682,9 @@ class UserController extends ActiveController
     public function actionCreateMenu(){
         $data = [
             [
-                "name"=>"会员服务",
-                "sub_button"=>[
-                    [
-                        "type" => "view",
-                        "name" => "服务内容",
-                        "url" => "https://www.xltcwy.cn/memberText1"
-                    ],
-                    [
-                        "type" => "view",
-                        "name" => "成为会员",
-                        "url" => "https://m.liechengcf.com/immigrant-index"
-                    ]
-                ]
+                "type" =>"view",
+                "name"=>"会员中心",
+                "url"=>"https://www.xltcwy.cn/becomeMember"
             ],
             [
                 "type" =>"view",

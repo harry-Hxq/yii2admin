@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\User;
 use backend\models\UserStopLog;
 use backend\models\UserTip;
+use common\aliyunDysms\api_demo\SmsDemo;
 use common\helpers\Wechat;
 use EasyWeChat\Message\Text;
 use Yii;
@@ -88,6 +89,10 @@ class UserStopLogController extends BaseController
             if(!$res){
                 $transaction -> rollBack();
             }
+
+            //发送短信
+            $res = SmsDemo::sendSms(17876013413,'新罗区');
+
             $transaction -> commit();
 
             $this->success('提醒成功', '/admin/user-stop-log');
@@ -98,6 +103,12 @@ class UserStopLogController extends BaseController
         }
 
 
+    }
+
+    public function actionTest(){
+//        var_dump(111);exit;
+        $res = SmsDemo::sendSms(17876013413,'新罗区');
+        var_dump($res);
     }
 
 
