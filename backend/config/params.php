@@ -27,6 +27,12 @@ return [
         3 => '用户',
         4 => '系统',
     ],
+    'WECHAT' => [
+        'APPID' =>  env('APP_ID','wx9c044f98156b8e20'),
+        'APPSECRET' => env('APP_SECRET','3fd73bb4cd76af92528e3c393435e2ab'),
+        'TOKEN' => env('TOKEN','harrytoken'),
+        'ENCODINGAESKEY' => env('ENCODINGAESKEY','ZR3fcYhfVdh0k4yCRcExsOjyOO8QIdnhCW8MTbv0ehm'),
+    ],
 
 
 ];
