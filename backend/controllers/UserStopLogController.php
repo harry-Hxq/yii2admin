@@ -93,6 +93,7 @@ class UserStopLogController extends BaseController
             $this->success('提醒成功', '/admin/user-stop-log');
         }catch (\Exception $e){
             $transaction -> rollBack();
+            Yii::error(sprintf("failed to tip user cos %s",$e ->getMessage()));
             throw new NotFoundHttpException('系统错误');
         }
 
