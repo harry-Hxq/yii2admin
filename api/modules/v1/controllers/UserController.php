@@ -615,11 +615,10 @@ class UserController extends ActiveController
 
 
     private function _checkSignature() {
-        $token_info = Yii::$app->params['WECHAT']['TOKEN'];
+        $token = Yii::$app->params['WECHAT']['TOKEN'];
         $signature = Yii::$app->request->get("signature");
         $timestamp = Yii::$app->request->get("timestamp");
         $nonce = Yii::$app->request->get("nonce");
-        $token = $token_info->token;
         $tmpArr = array($token, $timestamp, $nonce);//C('token')
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode($tmpArr);
