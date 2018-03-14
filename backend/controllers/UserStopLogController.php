@@ -109,7 +109,14 @@ class UserStopLogController extends BaseController
 
     public function actionTest(){
 //        var_dump(111);exit;
-        $res = SmsDemo::sendSms(17876013413,'新罗区');
+//        $res = SmsDemo::sendSms(17876013413,'新罗区');
+
+        Yii::$app->redis->set('user','aaa');
+        Yii::$app->redis->set('user2','bbb');
+        Yii::$app->redis->set('user3','ccc');
+        Yii::$app->redis->set('user4','ddd');
+        $res = Yii::$app->redis->get('user');//此时可以输出aaa
+//        Yii::$app->redis->flushall();//删除redis中的所有数据
         var_dump($res);
     }
 
