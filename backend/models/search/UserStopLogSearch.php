@@ -49,6 +49,7 @@ class UserStopLogSearch extends UserStopLog
         $query->select("yii2_user_stop_log.*, yii2_user.username");
 
         // add conditions that should always apply here
+        $query -> orderBy('yii2_user_stop_log.create_time desc');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

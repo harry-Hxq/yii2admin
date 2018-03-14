@@ -8,6 +8,7 @@ use api\models\WxLoginForm;
 use backend\models\Route;
 use backend\models\UserStopLog;
 use backend\models\UserTip;
+use common\helpers\Formatter;
 use common\helpers\FuncHelper;
 use common\helpers\Wechat;
 use common\modelsgii\UserRecharge;
@@ -113,6 +114,11 @@ class UserController extends ActiveController
     {
         $user = User::findIdentityByAccessToken($token);
         if($user){
+
+            if($user->stop_car_status == 2){
+                $userStopLog = UserStopLog::find()->where(['uid' => $user->uid,'status' => 2]) ->one();
+            }
+
             $userInfo =  [
                 'id' => $user->uid,
                 'plate_num' => $user->plate_num,
@@ -122,7 +128,11 @@ class UserController extends ActiveController
                 'deadline' => min(intval(strtotime(date("Y-m-d",$user->reg_vip_time) + (86400 * 365) - time()) / 86400),1),
                 'headimg' => $user->headimg,
                 'username' => $user->username,
-                'stop_car_status' => $user->stop_car_status,
+                'stop_car_status' => intval($user->stop_car_status),
+                'lat' => isset($userStopLog->latitude) ? floatval($userStopLog->latitude) : 0,
+                'lng' => isset($userStopLog->longitude) ? floatval($userStopLog->longitude) : 0,
+                'address' => isset($userStopLog->remark) ? $userStopLog->remark : '',
+                'is_tip' => isset($userStopLog->is_tip) ? intval($userStopLog->is_tip) : 1,
             ];
             return ['code' => 200, 'msg' => 'ok' ,'data' =>  $userInfo];
         }
@@ -679,6 +689,9 @@ class UserController extends ActiveController
         $wechat->server->serve()->send();
     }
 
+    /**
+     * 创建菜单
+     */
     public function actionCreateMenu(){
         $data = [
             [
@@ -700,5 +713,20 @@ class UserController extends ActiveController
         $wechat = Wechat::wxInit();
         $wechat -> menu -> add($data);
     }
+
+    /**
+     * 发送手机验证码
+     */
+    public function actionSendMsg(){
+        $phone = Yii::$app->request->get('phone');
+        if(empty($phone)){
+            return ["code"=>-1, "msg"=>'请填写手机号'];
+        }
+        if(!Formatter::isMobile($phone)){
+            return ["code" => -1, "msg" => "手机格式错误"];
+        }
+
+    }
+
 
 }
