@@ -8,8 +8,10 @@ use api\models\WxLoginForm;
 use backend\models\Route;
 use backend\models\UserStopLog;
 use backend\models\UserTip;
+use common\aliyunDysms\api_demo\SmsDemo;
 use common\helpers\Formatter;
 use common\helpers\FuncHelper;
+use common\helpers\Sms;
 use common\helpers\Wechat;
 use common\modelsgii\UserRecharge;
 use EasyWeChat\Message\Text;
@@ -57,6 +59,7 @@ class UserController extends ActiveController
                 'pay-local-order',
                 'end-stop-car',
                 'wx-index',
+                'send-vcode',
             ]
         ];
         return $behaviors;
@@ -333,12 +336,22 @@ class UserController extends ActiveController
         $token = Yii::$app->request->post('token');
         $plate_num = Yii::$app->request->post('plate_num','');
         $mobile = Yii::$app->request->post('mobile','');
+        $vcode = Yii::$app->request->post('vcode','');
         $user = User::findIdentityByAccessToken($token);
         if($user){
             if(!empty($plate_num)){
                 $user -> plate_num = $plate_num;
             }
             if(!empty($mobile)){
+                if(empty($vcode)){
+                    return ['code' => -1, 'msg' => '手机验证码不能为空','data' => null];
+                }
+
+                if(Yii::$app->cache->get($mobile) != $vcode){
+                    return ['code' => -1, 'msg' => '手机验证码错误','data' => null];
+                }
+                Yii::$app->cache->delete($mobile);
+
                 $user -> mobile = $mobile;
             }
             $user -> update_time = time();
@@ -651,7 +664,7 @@ class UserController extends ActiveController
             switch ($message->MsgType) {
                 case 'event':
                     if ($message->Event == "subscribe") {
-                        $content = "1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />"."2.很有效的规避罚单，省时省钱。"."<br />"."1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />";
+                        $content =  "亲 终于等到您！想随时随地放心停车，就选停车无忧。因为这是个关于规避违停罚单的公众号。";
                         return new Text(['content'=>$content]);
                     } elseif ($message->Event == "unsubscribe") {
 
@@ -662,7 +675,7 @@ class UserController extends ActiveController
                     }
                     break;
                 case 'text':
-                    $content = "1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />"."2.很有效的规避罚单，省时省钱。"."<br />"."1.内部关系，实时得知交警正在执勤的路段或即将执勤的路段，得知具体位置。"."<br />";
+                    $content =  "亲 终于等到您！想随时随地放心停车，就选停车无忧。因为这是个关于规避违停罚单的公众号。";
                     return new Text(['content'=>$content]);
                     break;
                 case 'image':
@@ -717,14 +730,20 @@ class UserController extends ActiveController
     /**
      * 发送手机验证码
      */
-    public function actionSendMsg(){
-        $phone = Yii::$app->request->get('phone');
+    public function actionSendVcode(){
+        $phone = Yii::$app->request->post('mobile');
         if(empty($phone)){
             return ["code"=>-1, "msg"=>'请填写手机号'];
         }
         if(!Formatter::isMobile($phone)){
             return ["code" => -1, "msg" => "手机格式错误"];
         }
+        if(Yii::$app->cache->get($phone)){
+            return ["code" => -1, "msg" => "系统错误"];
+        }
+        SmsDemo::sendVerifyCode($phone);
+
+        return ["code"=>200, "msg"=>'ok'];
 
     }
 

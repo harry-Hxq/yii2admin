@@ -6,6 +6,7 @@ use backend\models\User;
 use backend\models\UserStopLog;
 use backend\models\UserTip;
 use common\aliyunDysms\api_demo\SmsDemo;
+use common\helpers\Sms;
 use common\helpers\Wechat;
 use EasyWeChat\Message\Text;
 use Yii;
@@ -90,7 +91,7 @@ class UserStopLogController extends BaseController
                 $transaction -> rollBack();
             }
 
-            //发送短信
+            //发送短信通知
             if($user -> mobile){
                 SmsDemo::sendSms($user->mobile,$UserStopLog -> remark);
             }
@@ -111,13 +112,13 @@ class UserStopLogController extends BaseController
 //        var_dump(111);exit;
 //        $res = SmsDemo::sendSms(17876013413,'新罗区');
 
-        Yii::$app->redis->set('user','aaa');
-        Yii::$app->redis->set('user2','bbb');
-        Yii::$app->redis->set('user3','ccc');
-        Yii::$app->redis->set('user4','ddd');
-        $res = Yii::$app->redis->get('user');//此时可以输出aaa
+//        Yii::$app->cache->set('user','aaa');
+//        Yii::$app->cache->set('user2','bbb');
+//        Yii::$app->cache->set('user3','ccc');
+//        Yii::$app->cache->set('user4','ddd');
+//        $res = Yii::$app->cache->get('user');//此时可以输出aaa
 //        Yii::$app->redis->flushall();//删除redis中的所有数据
-        var_dump($res);
+//        var_dump($res);
     }
 
 

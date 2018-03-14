@@ -1,7 +1,8 @@
 <?php
 
-
 namespace common\helpers;
+use common\components\ValidateCode;
+use Yii;
 
 /**
  * StringHelper
@@ -50,5 +51,15 @@ class StringHelper extends \yii\helpers\StringHelper{
             $str);
 
         return $str;
+    }
+    /**
+     * @brief 获取图片验证码(base64)
+     * @return string
+     */
+    public static function getImgCaptcha(){
+        $Captcha = new ValidateCode();
+        $CaptchaInfo =  $Captcha->doimg();
+        Yii::$app->session->set('CaptchaCode',$CaptchaInfo['code']);
+        return 'data:image/jpeg;base64,'.$CaptchaInfo['image'];
     }
 }

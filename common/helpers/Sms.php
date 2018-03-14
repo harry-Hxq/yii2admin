@@ -1,8 +1,8 @@
 <?php
-namespace common\aliyunDysms\api_demo;
+namespace common\helpers;
 ini_set("display_errors", "on");
 
-require_once dirname(__DIR__) . '/api_sdk/vendor/autoload.php';
+require_once dirname(__DIR__) . 'aliyunDysms/api_sdk/vendor/autoload.php';
 
 use Aliyun\Core\Config;
 use Aliyun\Core\Profile\DefaultProfile;
@@ -22,7 +22,7 @@ Config::load();
  * 执行此文件即可体验语音服务产品API功能(只需要将AK替换成开通了云通信-短信服务产品功能的AK即可)
  * 备注:Demo工程编码采用UTF-8
  */
-class SmsDemo
+class Sms
 {
 
     static $acsClient = null;
@@ -40,9 +40,9 @@ class SmsDemo
         $domain = "dysmsapi.aliyuncs.com";
 
         // TODO 此处需要替换成开发者自己的AK (https://ak-console.aliyun.com/)
-        $accessKeyId = "LTAIOSrI9WBT9wA0"; // AccessKeyId
+        $accessKeyId = env('SMS_ACCESS_KEY_ID',"LTAIOSrI9WBT9wA0"); // AccessKeyId
 
-        $accessKeySecret = "hX8EO7VXL8H1p1NeZdLbm9pFPLL2xq"; // AccessKeySecret
+        $accessKeySecret = env('SMS_ACCESS_KEY_SECRET',"hX8EO7VXL8H1p1NeZdLbm9pFPLL2xq"); // AccessKeySecret
 
         // 暂时不支持多Region
         $region = "cn-hangzhou";
@@ -137,6 +137,7 @@ class SmsDemo
 
         return $acsResponse;
     }
+
     /**
      * 批量发送短信
      * @return stdClass
