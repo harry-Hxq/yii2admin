@@ -172,6 +172,7 @@ class UserController extends ActiveController
                 foreach ($tipInfo as $k => $v){
                     $list[] = [
                         'route_id' =>  $v['route_id'],
+                        'remark' =>  $v['remark'],
                         'create_time' =>  intval($v['create_time']),
                     ];
                 }
@@ -528,7 +529,7 @@ class UserController extends ActiveController
                 'body'             => '停车服务年费',
                 'detail'           => '停车服务年费',
                 'out_trade_no'     => $order_id,
-                'total_fee'        => 11800, // 单位：固定1元，使用分为单位
+                'total_fee'        => 10, // 单位：固定1元，使用分为单位
                 'notify_url'       => Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'openid'           => $user['openid'], // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             ];
