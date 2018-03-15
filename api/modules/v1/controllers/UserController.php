@@ -60,6 +60,7 @@ class UserController extends ActiveController
                 'end-stop-car',
                 'wx-index',
                 'send-vcode',
+                'stop-tip-list',
             ]
         ];
         return $behaviors;
@@ -309,22 +310,32 @@ class UserController extends ActiveController
      */
     public function actionStopTipList ()
     {
-        $token = Yii::$app->request->post('token');
-        $user = User::findIdentityByAccessToken($token);
-        if($user){
+        $str = range('A','Z');
+        $routeArr = ['犀牛路','龙腾北路','龙岩大道','石锣鼓','龙川西路','登高西路','小溪路','黉门路','莲庄北路',
+            '西郊路','罗龙西路','和平路','西安南路','人民路','曹溪中路','曹溪中路西','莲东北路','莲庄北路',
+            '天平路','龙川北路','莲庄南路','乘风路'];
+        $final_data = [
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".rand(1,9)."***".$str[rand(0,25)]."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+            ["name" =>"恭喜车主闽F".$str[rand(0,25)]."***".rand(1,9)."在".$routeArr[rand(0,21)]."成功规避一张违停罚单"],
+        ];
+        return ['code' => 200, 'msg' => 'ok','data' => $final_data];
 
-            $final_data = [
-                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
-                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
-                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
-                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
-                '恭喜车主闽F6***0于3月10日下午在犀牛路成功规避一张停车罚单',
-            ];
-
-            return ['code' => 200, 'msg' => 'ok','data' => $final_data];
-
-        }
-        return ['code' => -2, 'msg' => '登录过期' ,'data' => null];
     }
 
 
