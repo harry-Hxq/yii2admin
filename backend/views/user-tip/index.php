@@ -9,8 +9,8 @@ use yii\grid\GridView;
 
 /* ===========================以下为本页配置信息================================= */
 /* 页面基本属性 */
-$this->title = '用户提醒管理';
-$this->params['title_sub'] = '用户提醒管理';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
+$this->title = '停车管理';
+$this->params['title_sub'] = '提醒记录';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
 
 /* 加载页面级别资源 */
 \backend\assets\TablesAsset::register($this);
@@ -30,28 +30,28 @@ $columns = [
         'options' => ['width' => '150px;'],
         'value' => 'username'
     ],
+//    [
+//        'header' => '路线',
+//        'attribute' => 'route_id',
+//        'options' => ['width' => '150px;']
+//    ],
     [
-        'header' => '路线',
-        'attribute' => 'route_id',
-        'options' => ['width' => '150px;']
-    ],
-    [
-        'header' => '备注',
+        'header' => '停车位置',
         'attribute' => 'remark',
         'options' => ['width' => '150px;']
     ],
     [
-        'header' => '创建时间',
+        'header' => '提醒时间',
         'attribute' => 'create_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
     ],
-    [
-        'header' => '更新时间',
-        'attribute' => 'update_time',
-        'options' => ['width' => '150px;'],
-        'format' => ['date', 'php:Y-m-d H:i']
-    ]
+//    [
+//        'header' => '更新时间',
+//        'attribute' => 'update_time',
+//        'options' => ['width' => '150px;'],
+//        'format' => ['date', 'php:Y-m-d H:i']
+//    ]
 ];
 ?>
 <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -92,7 +92,7 @@ $columns = [
 <!-- 定义数据块 -->
 <?php $this->beginBlock('test'); ?>
 jQuery(document).ready(function() {
-    highlight_subnav('user-stop-log/index'); //子导航高亮
+    highlight_subnav('user-tip/index'); //子导航高亮
 });
 <?php $this->endBlock() ?>
 <!-- 将数据块 注入到视图中的某个位置 -->

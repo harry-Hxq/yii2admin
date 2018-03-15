@@ -18,7 +18,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['uid', 'reg_time', 'reg_ip', 'last_login_time', 'last_login_ip', 'update_time', 'tuid', 'score', 'score_all', 'status'], 'integer'],
+            [['uid', 'reg_time', 'reg_ip', 'last_login_time', 'last_login_ip', 'update_time', 'tuid', 'score', 'score_all', 'status','is_vip'], 'integer'],
             [['username', 'password', 'salt', 'email', 'mobile', 'image'], 'safe'],
         ];
     }
@@ -57,6 +57,7 @@ class UserSearch extends User
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query -> orderBy('reg_time desc');
 
         $query->andFilterWhere([
             'uid' => $this->uid,
@@ -69,6 +70,7 @@ class UserSearch extends User
             'score' => $this->score,
             'score_all' => $this->score_all,
             'status' => $this->status,
+            'is_vip' => $this->is_vip,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])

@@ -29,7 +29,7 @@ $this->beginPage();
     <!-- BEGIN HEAD -->
     <head>
         <meta charset="utf-8" />
-        <title><?= Html::encode($this->title) ?> | Yii2通用后台 by huanglongfei.cn</title>
+        <title><?= Html::encode($this->title) ?></title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -89,8 +89,8 @@ $this->beginPage();
                     <ul class="nav navbar-nav pull-right">
                         
                         <!-- BEGIN NOTIFICATION DROPDOWN 通知消息（主要显示一些待处理的事件） -->
-                        <?php $this->beginContent('@app/views/layouts/public/notice.php') ?>
-                        <?php $this->endContent() ?>
+<!--                        --><?php //$this->beginContent('@app/views/layouts/public/notice.php') ?>
+<!--                        --><?php //$this->endContent() ?>
                         <!-- END NOTIFICATION DROPDOWN -->
                         
                         <!-- BEGIN USER LOGIN DROPDOWN -->
@@ -102,12 +102,12 @@ $this->beginPage();
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
-                                <li><a href="#"><i class="icon-user"></i> 个人主页 </a></li>
-                                <li><a href="#"><i class="icon-calendar"></i> 日历 </a></li>
-                                <li><a href="#"><i class="icon-envelope-open"></i> 收件箱<span class="badge badge-danger"> 3 </span></a></li>
-                                <li><a href="#"><i class="icon-rocket"></i> 我的任务<span class="badge badge-success"> 7 </span></a></li>
+<!--                                <li><a href="#"><i class="icon-user"></i> 个人主页 </a></li>-->
+<!--                                <li><a href="#"><i class="icon-calendar"></i> 日历 </a></li>-->
+<!--                                <li><a href="#"><i class="icon-envelope-open"></i> 收件箱<span class="badge badge-danger"> 3 </span></a></li>-->
+<!--                                <li><a href="#"><i class="icon-rocket"></i> 我的任务<span class="badge badge-success"> 7 </span></a></li>-->
                                 <li class="divider"> </li>
-                                <li><a href="#"><i class="icon-lock"></i> 锁屏 </a></li>
+<!--                                <li><a href="#"><i class="icon-lock"></i> 锁屏 </a></li>-->
                                 <li><a href="<?=Url::toRoute('login/logout')?>"><i class="icon-key"></i> 注销 </a></li>
                             </ul>
                         </li>
@@ -153,50 +153,34 @@ $this->beginPage();
             <!-- BEGIN CONTENT -->
             <div class="page-content-wrapper">
                 
-                <!-- 表单操作ajax弹出提示 -->
-                <style>
-                    .fixed{position: fixed!important;}
-                    .alert{color: #c09853;font-weight: bold;border: 1px solid #fbeed5;background-color: #fcf8e3;}
-                    #top-alert {display: block;top: 40px;right: 20px;z-index: 9999;margin-top: 20px;padding-top: 12px;padding-bottom: 12px;overflow: hidden;font-size: 16px;}
-                    .alert-error {color: white;border-color: #eed3d7;background-color: #FF6666;}
-                    .alert-success {color: #468847;background-color: #CCFF99;border-color: #eed3d7;}
-                    @media (max-width: 768px) {.alert_left {left:20px; }}
-                    @media (min-width: 768px) {.alert_left {left:245px; }}
-                </style>
-                <div id="top-alert" class="fixed alert alert-error alert_left" style="display: none;">
-                    <button class="close" style="margin-top:6px;">&times;</button>
-                    <div class="alert-content">这是Ajax弹出内容</div>
-                </div>
+
                 
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
                     <!-- BEGIN PAGE HEADER-->
                     <!-- BEGIN THEME PANEL 设置界面 -->
-                    <?php $this->beginContent('@app/views/layouts/public/setting.php') ?>
-                    <?php $this->endContent() ?>
+<!--                    --><?php //$this->beginContent('@app/views/layouts/public/setting.php') ?>
+<!--                    --><?php //$this->endContent() ?>
                     <!-- END THEME PANEL -->
                     <!-- BEGIN PAGE BAR 快速导航 -->
-                    <div class="page-bar">
-                        <ul class="page-breadcrumb">
-                            <li>
-                                <a href="<?=Url::to('index/index')?>">主页</a>
-                                <i class="fa fa-circle"></i>
-                            </li>
-                            <?php foreach($breadcrumbs as $breadcrumb): ?>
-                            <li>
-                                <a href="#"><?=$breadcrumb['title']?></a>
-                                <i class="fa fa-circle"></i>
-                            </li>
-                            <?php endforeach ?>
-                            <li><a href="#">内容</a></li>
-                        </ul>
-                    </div>
+<!--                    <div class="page-bar">-->
+<!--                        <ul class="page-breadcrumb">-->
+<!--                            <li>-->
+<!--                                <a href="--><?//=Url::to('index/index')?><!--">主页</a>-->
+<!--                                <i class="fa fa-circle"></i>-->
+<!--                            </li>-->
+<!--                            --><?php //foreach($breadcrumbs as $breadcrumb): ?>
+<!--                            <li>-->
+<!--                                <a href="#">--><?//=$breadcrumb['title']?><!--</a>-->
+<!--                                <i class="fa fa-circle"></i>-->
+<!--                            </li>-->
+<!--                            --><?php //endforeach ?>
+<!--                            <li><a href="#">内容</a></li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE 正副标题 -->
-                    <h3 class="page-title"> 
-                        <?= Html::encode($this->title) ?>
-                        <small><?= Html::encode(isset($this->params['title_sub'])?$this->params['title_sub']:'') ?></small>
-                    </h3>
+
                     <!-- END PAGE TITLE-->
                     <!-- BEGIN PAGE CONTENT 正文内容 -->
                     <div class="row">
@@ -215,7 +199,7 @@ $this->beginPage();
         <!-- BEGIN FOOTER -->
         <div class="page-footer">
             <div class="page-footer-inner">
-                2016 &copy; Metronic by huanglongfei.cn.
+                2018 &copy; 停车无忧.
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>

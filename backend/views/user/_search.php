@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'username')->textInput()->label('用户名') ?>
     </div>
     <div class="col-md-1">
-    <?=$form->field($model, 'status')->dropDownList([''=>'全部',0=>'禁用',1=>'正常'],['class'=>'form-control'])->label('状态'); ?>
+    <?=$form->field($model, 'is_vip')->dropDownList([''=>'全部',0=>'非vip会员',1=>'vip会员'],['class'=>'form-control'])->label('会员类型'); ?>
     </div>
 
     <div class="col-md-2">

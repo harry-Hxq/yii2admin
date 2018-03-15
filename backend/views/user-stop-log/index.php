@@ -9,8 +9,8 @@ use yii\grid\GridView;
 
 /* ===========================以下为本页配置信息================================= */
 /* 页面基本属性 */
-$this->title = '用户停车管理';
-$this->params['title_sub'] = '用户停车管理';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
+$this->title = '停车管理';
+$this->params['title_sub'] = '停车记录';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
 
 /* 加载页面级别资源 */
 \backend\assets\TablesAsset::register($this);
@@ -39,24 +39,28 @@ $columns = [
         'header' => '停车状态',
         'options' => ['width' => '150px;'],
         'content' => function($model){
-             return Yii::$app->params['STOP_CAR_STATUS'][$model['status']];
-        }
+            return  $model['status'] == 1 ?
+                Html::tag('span','已结束',['class'=>'badge badge-important ']) :
+                Html::tag('span','停车中',['class'=>'badge badge-success']);
+        },
     ],
     [
         'header' => '是否提醒',
         'options' => ['width' => '150px;'],
         'content' => function($model){
-             return Yii::$app->params['STOP_IS_TIP'][$model['is_tip']];
+            return  $model['is_tip'] == 1 ?
+                Html::tag('span','未提醒',['class'=>'badge badge-success ']) :
+                Html::tag('span','已提醒',['class'=>'badge badge-important']);
         }
     ],
     [
-        'header' => '创建时间',
+        'header' => '停车时间',
         'attribute' => 'create_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
-        'header' => '更新时间',
+        'header' => '结束时间',
         'attribute' => 'update_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']

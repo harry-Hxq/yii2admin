@@ -25,9 +25,12 @@ $columns = [
         }
     ],
     [
-        'header' => 'UID',
-        'attribute' => 'uid',
-        'options' => ['width' => '50px;']
+        'header' => '头像',
+        'attribute' => 'headimg',
+        'options' => ['width' => '50px;'],
+        'content' => function($model) {
+            return Html::img($model['headimg'], ['class' => '','style'=>'width:35px;']);
+        }
     ],
     [
         'header' => '用户名',
@@ -35,8 +38,8 @@ $columns = [
         'options' => ['width' => '150px;']
     ],
     [
-        'header' => '邮箱',
-        'attribute' => 'email',
+        'header' => '车牌号',
+        'attribute' => 'plate_num',
         'options' => ['width' => '150px;']
     ],
     [
@@ -44,78 +47,79 @@ $columns = [
         'attribute' => 'mobile',
         'options' => ['width' => '100px;']
     ],
+//    [
+//        'header' => '最后登录时间',
+//        'attribute' => 'last_login_time',
+//        'options' => ['width' => '150px;'],
+//        'format' => ['date', 'php:Y-m-d H:i']
+//    ],
     [
-        'header' => '最后登录时间',
-        'attribute' => 'last_login_time',
-        'options' => ['width' => '150px;'],
-        'format' => ['date', 'php:Y-m-d H:i']
-    ],
-    [
-        'header' => '最后登录IP',
-        'attribute' => 'last_login_ip',
+        'header' => '是否是vip',
+        'attribute' => 'is_vip',
         'options' => ['width' => '120px;'],
-        'content' => function($model){
-            return long2ip($model['last_login_ip']);
+        'content' => function($model) {
+            return  $model['is_vip'] == 0 ?
+                Html::tag('span','非vip会员',['class'=>'badge badge-important ']) :
+                Html::tag('span','vip会员',['class'=>'badge badge-success']);
         }
     ],
-    [
-        'header' => '当前积分',
-        'attribute' => 'score',
-        'options' => ['width' => '80px;'],
-    ],
-    [
-        'header' => '总积分',
-        'attribute' => 'score_all',
-        'options' => ['width' => '80px;'],
-    ],
-    [
-        'header' => '状态',
-        'attribute' => 'status',
-        'options' => ['width' => '50px;'],
-        'content' => function($model){
-            return $model['status'] ?
-                Html::tag('span','正常',['class'=>'badge badge-success']) :
-                Html::tag('span','禁用',['class'=>'badge badge-important']);
-        }
-    ],
-    [
-        'class' => 'yii\grid\ActionColumn',
-        'header' => '操作',
-        'template' => '{edit} {tuijian} {delete}',
-        //'options' => ['width' => '200px;'],
-        'buttons' => [
-            'edit' => function ($url, $model, $key) {
-                return Html::a('<i class="fa fa-edit"></i> 编辑', ['edit','uid'=>$key], [
-                    'title' => Yii::t('app', '编辑'),
-                    'class' => 'btn btn-xs purple'
-                ]);
-            },
-            'tuijian' => function ($url, $model, $key) {
-                return Html::a('<i class="fa fa-jpy"></i> 推荐', ['order/index', 'tuid'=>$key], [
-                    'title' => Yii::t('app', '推荐人订单查询'),
-                    'class' => 'btn btn-xs red'
-                ]);
-            },
-            'delete' => function ($url, $model, $key) {
-                return Html::a('<i class="fa fa-times"></i>', ['delete', 'id'=>$key], [
-                    'title' => Yii::t('app', '删除'),
-                    'class' => 'btn btn-xs red ajax-get confirm'
-                ]);
-            }
-        ],
-    ],
+//    [
+//        'header' => '当前积分',
+//        'attribute' => 'score',
+//        'options' => ['width' => '80px;'],
+//    ],
+//    [
+//        'header' => '总积分',
+//        'attribute' => 'score_all',
+//        'options' => ['width' => '80px;'],
+//    ],
+//    [
+//        'header' => '状态',
+//        'attribute' => 'status',
+//        'options' => ['width' => '50px;'],
+//        'content' => function($model){
+//            return $model['status'] ?
+//                Html::tag('span','正常',['class'=>'badge badge-success']) :
+//                Html::tag('span','禁用',['class'=>'badge badge-important']);
+//        }
+//    ],
+//    [
+//        'class' => 'yii\grid\ActionColumn',
+//        'header' => '操作',
+//        'template' => '{edit} {delete}',
+//        //'options' => ['width' => '200px;'],
+//        'buttons' => [
+//            'edit' => function ($url, $model, $key) {
+//                return Html::a('<i class="fa fa-edit"></i> 编辑', ['edit','uid'=>$key], [
+//                    'title' => Yii::t('app', '编辑'),
+//                    'class' => 'btn btn-xs purple'
+//                ]);
+//            },
+////            'tuijian' => function ($url, $model, $key) {
+////                return Html::a('<i class="fa fa-jpy"></i> 推荐', ['order/index', 'tuid'=>$key], [
+////                    'title' => Yii::t('app', '推荐人订单查询'),
+////                    'class' => 'btn btn-xs red'
+////                ]);
+////            },
+//            'delete' => function ($url, $model, $key) {
+//                return Html::a('<i class="fa fa-times"></i>', ['delete', 'id'=>$key], [
+//                    'title' => Yii::t('app', '删除'),
+//                    'class' => 'btn btn-xs red ajax-get confirm'
+//                ]);
+//            }
+//        ],
+//    ],
 ];
 ?>
 <div class="portlet light portlet-fit portlet-datatable bordered">
-    <div class="portlet-title">
+<!--    <div class="portlet-title">
         <div class="caption">
             <i class="icon-settings font-dark"></i>
             <span class="caption-subject font-dark sbold uppercase">管理信息</span>
         </div>
         <div class="actions">
             <div class="btn-group btn-group-devided">
-                <?=Html::a('添加 <i class="icon-plus"></i>',['add'],['class'=>'btn green'])?>
-                <?=Html::a('所有用户 <i class="icon-user"></i>',['','is_all'=>'1'],['class'=>'btn green'])?>
+                <?/*=Html::a('添加 <i class="icon-plus"></i>',['add'],['class'=>'btn green'])*/?>
             </div>
             <div class="btn-group">
                 <button class="btn blue btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
@@ -129,7 +133,7 @@ $columns = [
                 </ul>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="portlet-body">
         <?php \yii\widgets\Pjax::begin(['options'=>['id'=>'pjax-container']]); ?>
         <div>

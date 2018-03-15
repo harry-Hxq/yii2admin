@@ -24,7 +24,7 @@ return [
      */
     'modules' => [],
     /* 默认路由 */
-    'defaultRoute' => 'index',
+    'defaultRoute' => 'user/index',
     /* 默认布局文件 优先级 控制器>配置文件>系统默认 */
     'layout' => 'main',
     /**

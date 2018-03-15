@@ -48,6 +48,7 @@ class UserTipSearch extends UserTip
         $query->select("yii2_user_tip.*, yii2_user.username");
 
         // add conditions that should always apply here
+        $query -> orderBy('yii2_user_tip.create_time desc');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

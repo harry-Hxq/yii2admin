@@ -19,7 +19,7 @@ class UserStopLogSearch extends UserStopLog
     public function rules()
     {
         return [
-            [['id', 'uid', 'create_time', 'update_time', 'status'], 'integer'],
+            [['id', 'uid', 'create_time', 'update_time', 'status','is_tip'], 'integer'],
             [['latitude', 'longitude', 'precision'], 'number'],
             [['username'], 'safe'],
         ];
@@ -65,6 +65,7 @@ class UserStopLogSearch extends UserStopLog
 
         $query->andFilterWhere(['like', 'yii2_user.username', trim($this->username)]);
         $query->andFilterWhere(['yii2_user_stop_log.status' =>  $this->status]);
+        $query->andFilterWhere(['yii2_user_stop_log.is_tip' =>  $this->is_tip]);
 
         return $dataProvider;
     }
