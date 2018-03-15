@@ -61,6 +61,7 @@ class UserController extends ActiveController
                 'wx-index',
                 'send-vcode',
                 'stop-tip-list',
+                'get-all-stop',
             ]
         ];
         return $behaviors;
@@ -758,6 +759,16 @@ class UserController extends ActiveController
         SmsDemo::sendVerifyCode($phone);
 
         return ["code"=>200, "msg"=>'ok'];
+
+    }
+
+
+    /**
+     * 发送手机验证码
+     */
+    public function actionGetAllStop(){
+        $userStopLog = UserStopLog::find()->select(['latitude','longitude'])->asArray()->all();
+        return ["code"=>200,"msg" => 'ok',"data" =>$userStopLog ];
 
     }
 

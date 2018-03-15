@@ -20,6 +20,9 @@ use yii\widgets\ActiveForm;
     <div class="col-md-2">
     <?= $form->field($model, 'username')->textInput()->label('用户名') ?>
     </div>
+    <div class="col-md-2">
+    <?= $form->field($model, 'remark')->textInput()->label('停车路段') ?>
+    </div>
     <div class="col-md-1">
         <?=$form->field($model, 'status')->dropDownList([''=>'全部',1=>'已结束',2=>'停车中'],['class'=>'form-control'])->label('停车状态'); ?>
     </div>

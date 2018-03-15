@@ -108,17 +108,11 @@ class UserStopLogController extends BaseController
 
     }
 
-    public function actionTest(){
-//        var_dump(111);exit;
-//        $res = SmsDemo::sendSms(17876013413,'新罗区');
+    public function actionStopMap(){
 
-//        Yii::$app->cache->set('user','aaa');
-//        Yii::$app->cache->set('user2','bbb');
-//        Yii::$app->cache->set('user3','ccc');
-//        Yii::$app->cache->set('user4','ddd');
-//        $res = Yii::$app->cache->get('user');//此时可以输出aaa
-//        Yii::$app->redis->flushall();//删除redis中的所有数据
-//        var_dump($res);
+        $userStopLog = UserStopLog::find()->select(['latitude','longitude'])->asArray()->all();
+
+        return $this->render('stop-map',['userStopLog' =>$userStopLog] );
     }
 
 
