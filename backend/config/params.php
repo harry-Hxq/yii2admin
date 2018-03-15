@@ -33,6 +33,12 @@ return [
         'TOKEN' => env('TOKEN','harrytoken'),
         'ENCODINGAESKEY' => env('ENCODINGAESKEY','ZR3fcYhfVdh0k4yCRcExsOjyOO8QIdnhCW8MTbv0ehm'),
     ],
+    'PAY_STATUS' => [
+        1 => '未成功(本地)',
+        2 => '未成功(微信)',
+        3 => '未成功(异常)',
+        4 => '成功',
+    ]
 
 
 ];

@@ -47,12 +47,7 @@ $columns = [
         'attribute' => 'mobile',
         'options' => ['width' => '100px;']
     ],
-//    [
-//        'header' => '最后登录时间',
-//        'attribute' => 'last_login_time',
-//        'options' => ['width' => '150px;'],
-//        'format' => ['date', 'php:Y-m-d H:i']
-//    ],
+
     [
         'header' => '是否是vip',
         'attribute' => 'is_vip',
@@ -62,6 +57,18 @@ $columns = [
                 Html::tag('span','非vip会员',['class'=>'badge badge-important ']) :
                 Html::tag('span','vip会员',['class'=>'badge badge-success']);
         }
+    ],
+    [
+        'header' => '注册时间',
+        'attribute' => 'reg_time',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d H:i']
+    ],
+    [
+        'header' => '购买vip时间',
+        'attribute' => 'reg_vip_time',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d H:i']
     ],
 //    [
 //        'header' => '当前积分',
