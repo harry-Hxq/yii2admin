@@ -546,7 +546,7 @@ class UserController extends ActiveController
             if($wx_order){
 
                 $wx_order->wx_order_id = $wx_order_id;
-                $wx_order->total_free = 11800;
+                $wx_order->total_fee = 11800;
                 $wx_order->wx_order_info_prepare = json_encode($result);
                 $wx_order->status = UserRecharge::STATUS_PAID_WECHAT; //订单微信状态
                 $wx_order->update_time = time();
