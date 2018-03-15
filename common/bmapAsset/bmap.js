@@ -1,7 +1,7 @@
 $(function(){
     // 百度地图API功能
 
-    $.get('http://www.yii2admin.cn/api/v1/user/get-all-stop',{},function (res) {
+    $.get('/api/v1/user/get-all-stop',{},function (res) {
         console.log(res);
         var map = new BMap.Map("allmap");
         var point = new BMap.Point(117.02147, 25.118569);
