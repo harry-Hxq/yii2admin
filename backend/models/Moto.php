@@ -36,7 +36,7 @@ class Moto extends \common\modelsgii\Moto
     public function rules()
     {
         return [
-            [['title','start_time','end_time','latitude','longitude'], 'required'],
+            [['start_time','end_time','latitude','longitude'], 'required'],
             [['remark'], 'string', 'max' => 255],
             [['title'], 'string', 'max' => 32,'min' => 3],
         ];

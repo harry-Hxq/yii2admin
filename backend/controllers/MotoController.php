@@ -54,7 +54,7 @@ class MotoController extends BaseController
 
         if (Yii::$app->request->isPost) {
             /* 表单验证 */
-            $data = Yii::$app->request->post('Route');
+            $data = Yii::$app->request->post('Moto');
             $data['start_time'] = strtotime($data['start_time']);
             $data['end_time'] = strtotime($data['end_time']);
             $model->setAttributes($data);

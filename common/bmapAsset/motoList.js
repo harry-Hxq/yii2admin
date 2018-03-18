@@ -58,6 +58,7 @@ function submitMoto(){
         console.log(res);
         if(res.code === 200){
             alert('添加成功');
+            $("#confirmMoto").modal('hide');
             addMarker(pointMoto)
         }
     })
