@@ -67,6 +67,10 @@ function submitMoto(){
 function addMarker(point){
     var marker = new BMap.Marker(point);
     map.addOverlay(marker);
+    marker.addEventListener("rightclick", function (e) {
+        console.log(e);
+        // alert(e.point.lng+","+e.point.lat)
+    });
 }
 
 $.get('/api/v1/user/moto-list',{},function (res) {

@@ -779,7 +779,10 @@ class UserController extends ActiveController
      * 获取摩托车执勤点
      */
     public function actionMotoList(){
-        $userStopLog = Moto::find()->select(['latitude','longitude'])->asArray()->all();
+        $userStopLog = Moto::find()->select(['latitude','longitude','start_time','end_time'])->asArray()->all();
+        foreach($userStopLog as $k=> $v){
+            $userStopLog[$k]['datetime'] = date("m月d",$v['start_time'])." ".date("H:i",$v['start_time'])."-".date("H:i",$v['end_time']);
+        }
         return ["code"=>200,"msg" => 'ok',"data" =>$userStopLog ];
     }
 

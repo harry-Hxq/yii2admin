@@ -2,6 +2,11 @@
 
 \backend\assets\MapAsset::register($this);
 $this->beginPage();
+$date = date("Y-m-d");
+$timeS =  date("H:i",strtotime(date("Y-m-d")));
+$timeN =  date("H:i",strtotime(date("Y-m-d"))+86399);
+$defaultStartData = $date."T".$timeS;
+$defaultEndData =  $date."T".$timeN;
 ?>
 <style type="text/css">
     body, html,#allmap {width: 100%;height: 100vh;overflow: hidden;margin:0;font-family:"微软雅黑";}
@@ -26,11 +31,11 @@ $this->beginPage();
                         <form>
                             <div class="form-group">
                                 <label for="recipient-name" class="control-label">开始时间:</label>
-                                <input type="datetime-local" class="form-control" id="start_time" value="2018/03/18 00:00">
+                                <input type="datetime-local" class="form-control" id="start_time" value="<?=$defaultStartData ?>">
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="control-label">结束时间:</label>
-                                <input type="datetime-local" class="form-control" id="end_time" value="2018/03/18 23:59">
+                                <input type="datetime-local" class="form-control" id="end_time" value="<?=$defaultEndData ?>">
                             </div>
                         </form>
                     </div>

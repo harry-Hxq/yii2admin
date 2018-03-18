@@ -9,8 +9,8 @@ use yii\grid\GridView;
 
 /* ===========================以下为本页配置信息================================= */
 /* 页面基本属性 */
-$this->title = '停车管理';
-$this->params['title_sub'] = '停车记录';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
+$this->title = '摩托执勤管理';
+$this->params['title_sub'] = '摩托执勤管理';  // 在\yii\base\View中有$params这个可以在视图模板中共享的参数
 
 /* 加载页面级别资源 */
 \backend\assets\TablesAsset::register($this);
@@ -25,42 +25,35 @@ $columns = [
         }
     ],
     [
-        'header' => '用户名',
-        'attribute' => 'username',
-        'options' => ['width' => '150px;'],
-        'value' => 'username'
-    ],
-    [
-        'header' => '位置',
-        'attribute' => 'remark',
+        'header' => '标题',
+        'attribute' => 'title',
         'options' => ['width' => '150px;']
     ],
     [
-        'header' => '停车状态',
-        'options' => ['width' => '150px;'],
-        'content' => function($model){
-            return  $model['status'] == 1 ?
-                Html::tag('span','已结束',['class'=>'badge badge-important ']) :
-                Html::tag('span','停车中',['class'=>'badge badge-success']);
-        },
-    ],
-    [
-        'header' => '是否提醒',
-        'options' => ['width' => '150px;'],
-        'content' => function($model){
-            return  $model['is_tip'] == 1 ?
-                Html::tag('span','未提醒',['class'=>'badge badge-success ']) :
-                Html::tag('span','已提醒',['class'=>'badge badge-important']);
-        }
-    ],
-    [
-        'header' => '停车时间',
-        'attribute' => 'create_time',
+        'header' => '开始时间',
+        'attribute' => 'start_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
         'header' => '结束时间',
+        'attribute' => 'end_time',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d H:i']
+    ],
+    [
+        'header' => '备注',
+        'attribute' => 'remark',
+        'options' => ['width' => '150px;']
+    ],
+    [
+        'header' => '创建时间',
+        'attribute' => 'create_time',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d H:i']
+    ],
+    [
+        'header' => '更新时间',
         'attribute' => 'update_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
@@ -68,16 +61,20 @@ $columns = [
     [
         'class' => 'yii\grid\ActionColumn',
         'header' => '操作',
-        'template' => '{tip}',
-        'options' => ['width' => '200px;'],
+        'template' => '{edit} {delete}',
+        //'options' => ['width' => '200px;'],
         'buttons' => [
-            'tip' => function ($url, $model, $key) {
-                if($model['status'] == 2 && $model['is_tip'] == 1){
-                    return Html::a('提醒',  $url, [
-                        'title' => Yii::t('app', '提醒'),
-                        'class' => 'btn btn-xs purple ajax-get',
-                    ]);
-                }
+            'edit' => function ($url, $model, $key) {
+                return Html::a('<i class="fa fa-edit"></i> 编辑', ['edit','uid'=>$key], [
+                    'title' => Yii::t('app', '编辑'),
+                    'class' => 'btn btn-xs purple'
+                ]);
+            },
+            'delete' => function ($url, $model, $key) {
+                return Html::a('<i class="fa fa-times"></i>', ['delete', 'id'=>$key], [
+                    'title' => Yii::t('app', '删除'),
+                    'class' => 'btn btn-xs red ajax-get confirm'
+                ]);
             }
         ],
     ],
@@ -91,7 +88,10 @@ $columns = [
         </div>
         <div class="actions">
             <div class="btn-group btn-group-devided">
-                <?=Html::a('地图查看 <i class="icon-plus"></i>',['stop-map'],['class'=>'btn green'])?>
+                <?=Html::a('地图查看 <i class="icon-plus"></i>',['/user-stop-log/moto-list'],['class'=>'btn green'])?>
+            </div>
+            <div class="btn-group btn-group-devided">
+                <?=Html::a('添加 <i class="icon-plus"></i>',['add'],['class'=>'btn green'])?>
             </div>
         </div>
     </div>
@@ -132,7 +132,7 @@ $columns = [
 <!-- 定义数据块 -->
 <?php $this->beginBlock('test'); ?>
 jQuery(document).ready(function() {
-    highlight_subnav('user-stop-log/index'); //子导航高亮
+    highlight_subnav('moto/index'); //子导航高亮
 });
 <?php $this->endBlock() ?>
 <!-- 将数据块 注入到视图中的某个位置 -->
