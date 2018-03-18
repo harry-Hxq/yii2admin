@@ -55,6 +55,7 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning','info'],
+                    'logVars' => ['_GET', '_POST'],
                 ],
             ],
         ],

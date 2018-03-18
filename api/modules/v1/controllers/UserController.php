@@ -5,6 +5,7 @@ namespace api\modules\v1\controllers;
 use api\models\LoginForm;
 use api\models\User;
 use api\models\WxLoginForm;
+use backend\models\Moto;
 use backend\models\Route;
 use backend\models\UserStopLog;
 use backend\models\UserTip;
@@ -62,6 +63,8 @@ class UserController extends ActiveController
                 'send-vcode',
                 'stop-tip-list',
                 'get-all-stop',
+                'moto-list',
+                'edit-moto',
             ]
         ];
         return $behaviors;
@@ -530,7 +533,7 @@ class UserController extends ActiveController
                 'body'             => '停车服务年费',
                 'detail'           => '停车服务年费',
                 'out_trade_no'     => $order_id,
-                'total_fee'        => 10, // 单位：固定1元，使用分为单位
+                'total_fee'        => 11800, // 单位：固定1元，使用分为单位
                 'notify_url'       => Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'openid'           => $user['openid'], // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             ];
@@ -770,6 +773,55 @@ class UserController extends ActiveController
         $userStopLog = UserStopLog::find()->select(['latitude','longitude'])->asArray()->all();
         return ["code"=>200,"msg" => 'ok',"data" =>$userStopLog ];
 
+    }
+
+    /**
+     * 获取摩托车执勤点
+     */
+    public function actionMotoList(){
+        $userStopLog = Moto::find()->select(['latitude','longitude'])->asArray()->all();
+        return ["code"=>200,"msg" => 'ok',"data" =>$userStopLog ];
+    }
+
+    /**
+     * ---------------------------------------
+     * 添加/编辑摩托车执勤位置
+     * ---------------------------------------
+     */
+    public function actionEditMoto(){
+
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post();
+            if(isset($data['id'])){ //编辑
+                $motoModel = Moto::find()->where(['id' =>$data['id']])->one();
+                if($motoModel){
+                    $motoModel -> start_time = strtotime($data['start_time']);
+                    $motoModel -> end_time = strtotime($data['end_time']);
+                    $motoModel -> latitude = $data['latitude'];
+                    $motoModel -> longitude = $data['longitude'];
+                    $motoModel -> remark = $data['remark'];
+                    $motoModel -> update_time = time();
+                    if( $motoModel -> save(false)){
+                        return ['code' => 200,'msg' => 'ok'];
+                    }
+                }
+
+            }else{//添加
+                $motoModel = new Moto();
+                $motoModel -> start_time = strtotime($data['start_time']);
+                $motoModel -> end_time = strtotime($data['end_time']);
+                $motoModel -> latitude = $data['latitude'];
+                $motoModel -> longitude = $data['longitude'];
+                $motoModel -> remark = $data['remark'];
+                $motoModel -> create_time = time();
+
+                if( $motoModel -> save(false)){
+                    return ['code' => 200,'msg' => 'ok'];
+                }
+
+            }
+            return ['code' => -1,'msg' => '系统错误'];
+        }
     }
 
 

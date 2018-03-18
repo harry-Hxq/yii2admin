@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Moto;
 use backend\models\User;
 use backend\models\UserStopLog;
 use backend\models\UserTip;
@@ -108,12 +109,30 @@ class UserStopLogController extends BaseController
 
     }
 
+    /**
+     * ---------------------------------------
+     * 地图查看停车中的位置
+     * ---------------------------------------
+     */
     public function actionStopMap(){
 
-        $userStopLog = UserStopLog::find()->select(['latitude','longitude'])->asArray()->all();
+        $userStopLog = UserStopLog::find()->select(['latitude','longitude'])->where(['status' => 2])->asArray()->all();
 
         return $this->render('stop-map',['userStopLog' =>$userStopLog] );
     }
+
+    /**
+     * ---------------------------------------
+     * 编辑摩托车执勤位置
+     * ---------------------------------------
+     */
+    public function actionMotoList(){
+
+//        $userStopLog = UserStopLog::find()->select(['latitude','longitude'])->where(['status' => 2])->asArray()->all();
+
+        return $this->render('moto-list');
+    }
+
 
 
     /**

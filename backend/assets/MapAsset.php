@@ -23,7 +23,7 @@ class MapAsset extends AssetBundle
     /* 全局JS文件 */
     public $js = [
         "http://api.map.baidu.com/api?v=2.0&ak=vFXoHFCpIsou67qZj4IbPEdEctOGGRel",
-        'bmap.js'
+        'motoList.js'
     ];
     /* 依赖关系 */
     public $depends = [
