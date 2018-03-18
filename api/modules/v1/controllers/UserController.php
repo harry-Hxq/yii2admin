@@ -682,7 +682,7 @@ class UserController extends ActiveController
             switch ($message->MsgType) {
                 case 'event':
                     if ($message->Event == "subscribe") {
-                        $content =  "亲 终于等到您！想随时随地放心停车，就选停车无忧。因为这是个关于规避违停罚单的公众号。";
+                        $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于规避违停罚单与摩托执勤点的公众号。";
                         return new Text(['content'=>$content]);
                     } elseif ($message->Event == "unsubscribe") {
 
@@ -693,7 +693,7 @@ class UserController extends ActiveController
                     }
                     break;
                 case 'text':
-                    $content =  "亲 终于等到您！想随时随地放心停车，就选停车无忧。因为这是个关于规避违停罚单的公众号。";
+                    $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于规避违停罚单与摩托执勤点的公众号。";
                     return new Text(['content'=>$content]);
                     break;
                 case 'image':
@@ -727,8 +727,8 @@ class UserController extends ActiveController
         $data = [
             [
                 "type" =>"view",
-                "name"=>"会员中心",
-                "url"=>"https://www.xltcwy.cn/becomeMember"
+                "name"=>"摩托执勤",
+                "url"=>"https://www.xltcwy.cn/motoMap"
             ],
             [
                 "type" =>"view",
@@ -737,7 +737,7 @@ class UserController extends ActiveController
             ],
             [
                 "type" =>"view",
-                "name"=>"个人中心",
+                "name"=>"会员中心",
                 "url"=>"https://www.xltcwy.cn/uc"
             ],
         ];
