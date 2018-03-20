@@ -25,36 +25,38 @@ $columns = [
         }
     ],
     [
-        'header' => '标题',
+        'header' => '执勤类型',
         'attribute' => 'title',
-        'options' => ['width' => '150px;']
+        'options' => ['width' => '150px;'],
+        'content' => function($model){
+            return $model['type'] == 1 ? Html::tag('span','摩托',['class'=>'badge badge-important']):
+                Html::tag('span','小车',['class'=>'badge badge-success']);
+        }
     ],
     [
-        'header' => '开始时间',
+        'header' => '执勤时间点',
         'attribute' => 'start_time',
         'options' => ['width' => '150px;'],
-        'format' => ['date', 'php:Y-m-d H:i']
+        'content' => function($model){
+            if($model['time_type'] == 1){
+                return  Html::tag('span','上午',['class'=>'badge badge-success']);
+            }elseif($model['time_type'] == 2){
+                return  Html::tag('span','下午',['class'=>'badge badge-warning']);
+            }elseif($model['time_type'] == 3){
+                return  Html::tag('span','晚上',['class'=>'badge badge-important']);
+            }else{
+                return  Html::tag('span','全天',['class'=>'badge badge-info']);
+            }
+        }
     ],
     [
-        'header' => '结束时间',
-        'attribute' => 'end_time',
-        'options' => ['width' => '150px;'],
-        'format' => ['date', 'php:Y-m-d H:i']
-    ],
-    [
-        'header' => '备注',
+        'header' => '地点',
         'attribute' => 'remark',
-        'options' => ['width' => '150px;']
+        'options' => ['width' => '300px;']
     ],
     [
         'header' => '创建时间',
         'attribute' => 'create_time',
-        'options' => ['width' => '150px;'],
-        'format' => ['date', 'php:Y-m-d H:i']
-    ],
-    [
-        'header' => '更新时间',
-        'attribute' => 'update_time',
         'options' => ['width' => '150px;'],
         'format' => ['date', 'php:Y-m-d H:i']
     ],

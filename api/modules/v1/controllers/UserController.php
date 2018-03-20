@@ -65,6 +65,8 @@ class UserController extends ActiveController
                 'get-all-stop',
                 'moto-list',
                 'edit-moto',
+                'route-list',
+                'route-dot',
             ]
         ];
         return $behaviors;
@@ -682,7 +684,7 @@ class UserController extends ActiveController
             switch ($message->MsgType) {
                 case 'event':
                     if ($message->Event == "subscribe") {
-                        $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于规避违停罚单与摩托执勤点的公众号。";
+                        $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于小车执勤点单与摩托执勤点的公众号。";
                         return new Text(['content'=>$content]);
                     } elseif ($message->Event == "unsubscribe") {
 
@@ -693,7 +695,7 @@ class UserController extends ActiveController
                     }
                     break;
                 case 'text':
-                    $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于规避违停罚单与摩托执勤点的公众号。";
+                    $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于小车执勤点单与摩托执勤点的公众号。";
                     return new Text(['content'=>$content]);
                     break;
                 case 'image':
@@ -727,18 +729,18 @@ class UserController extends ActiveController
         $data = [
             [
                 "type" =>"view",
-                "name"=>"会员中心",
-                "url"=>"https://www.xltcwy.cn/uc"
-            ],
-            [
-                "type" =>"view",
-                "name"=>"停车位置",
-                "url"=>"https://www.xltcwy.cn/stopCar"
-            ],
-            [
-                "type" =>"view",
                 "name"=>"摩托执勤",
-                "url"=>"https://www.xltcwy.cn/motoMap"
+                "url"=>"https://www.xltcwy.cn/routeList"
+            ],
+            [
+                "type" =>"view",
+                "name"=>"小车执勤",
+                "url"=>"https://www.xltcwy.cn/routeList?index=1"
+            ],
+            [
+                "type" =>"view",
+                "name"=>"使用说明",
+                "url"=>"https://www.xltcwy.cn/explain"
             ]
         ];
         $wechat = Wechat::wxInit();
@@ -826,6 +828,73 @@ class UserController extends ActiveController
             return ['code' => -1,'msg' => '系统错误'];
         }
     }
+
+
+    /**
+     * 获取摩托车/小车执勤列表
+     * @method get
+     * @param string $token
+     * @param int $type
+     * @param int $page
+     * @param int $num
+     * @return array
+     */
+    public function actionRouteList(){
+
+        $token = Yii::$app->request->get('token');
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+
+            $page = Yii::$app->request->get('page',1);
+            $num = Yii::$app->request->get('num',10);
+
+            $motoList = Route::find()
+                ->select(['route_date','type'])
+                ->limit($num)
+                ->offset(($page-1)*$num)
+                ->orderBy('route_date desc')
+                ->groupBy('route_date,type')
+                ->asArray()
+                ->all();
+            $today = strtotime(date("Y-m-d"));
+            foreach($motoList as $k=> $v){
+                if($v['route_date'] == $today){
+                    $motoList[$k]['is_news'] = 1;
+                }else{
+                    $motoList[$k]['is_news'] = 0;
+                }
+            }
+            return ["code"=>200,"msg" => 'ok',"data" =>$motoList ];
+        }
+    }
+
+
+
+    /**
+     * 获取摩托车/小车执勤点
+     * @method get
+     * @param string $token
+     * @param int $id
+     * @param int $type
+     * @return array
+     */
+    public function actionRouteDot(){
+
+        $token = Yii::$app->request->get('token');
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+
+            $route_date = Yii::$app->request->get('route_date',strtotime(date("Y-m-d")));
+            $type = Yii::$app->request->get('type');
+
+            $motoDotList = Route::find()
+                ->where(['route_date' => $route_date,'type' => $type])
+                ->asArray()
+                ->all();
+            return ["code"=>200,"msg" => 'ok',"data" =>$motoDotList ];
+        }
+    }
+
 
 
 }

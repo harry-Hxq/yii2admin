@@ -11,6 +11,13 @@ use Yii;
  */
 class Route extends \common\modelsgii\Route
 {
+    const TYPE_MOTO = 1; //motor
+    const TYPE_CAR = 2; //car
+    const TYPE_TIME_MORNING = 1;
+    const TYPE_TIME_AFTERNOON = 2;
+    const TYPE_TIME_EVENING = 3;
+    const TYPE_TIME_ALLDAY = 4;
+
 
     /**
      * @inheritdoc
@@ -36,9 +43,8 @@ class Route extends \common\modelsgii\Route
     public function rules()
     {
         return [
-            [['title','start_time','end_time','latitude','longitude'], 'required'],
+            [['type','time_type','remark','latitude','longitude','route_date'], 'required'],
             [['remark'], 'string', 'max' => 255],
-            [['title'], 'string', 'max' => 32,'min' => 3],
         ];
     }
     

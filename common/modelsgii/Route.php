@@ -55,6 +55,8 @@ class Route extends \common\core\BaseActiveRecord
             'create_time' => '创建时间',
             'update_time' => '更新时间',
             'status' => '状态',
+            'time_type' => '时段',
+            'type' => '类型',
         ];
     }
 }

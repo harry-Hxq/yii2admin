@@ -53,8 +53,7 @@ class RouteController extends BaseController
         if (Yii::$app->request->isPost) {
             /* 表单验证 */
             $data = Yii::$app->request->post('Route');
-            $data['start_time'] = strtotime($data['start_time']);
-            $data['end_time'] = strtotime($data['end_time']);
+            $data['route_date'] = strtotime(date("Y-m-d"));
             $model->setAttributes($data);
             /* 保存用户数据到数据库 */
             if ($model->save()) {
@@ -81,8 +80,6 @@ class RouteController extends BaseController
         if (Yii::$app->request->isPost) {
             /* 表单验证 */
             $data = Yii::$app->request->post('Route');
-            $data['start_time'] = strtotime($data['start_time']);
-            $data['end_time'] = strtotime($data['end_time']);
 
             $model->setAttributes($data);
             /* 保存用户数据到数据库 */
@@ -93,8 +90,6 @@ class RouteController extends BaseController
             }
         }
 
-        $model->start_time = date('Y-m-d H:i', $model->start_time);
-        $model->end_time = date('Y-m-d H:i', $model->end_time);
         return $this->render('edit', [
             'model' => $model,
         ]);
