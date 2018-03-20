@@ -18,7 +18,7 @@ class RouteSearch extends Route
     public function rules()
     {
         return [
-            [['start_time', 'end_time', 'create_time', 'status'], 'integer'],
+            [['route_date', 'type', 'time_type', 'remark'], 'integer'],
             [['remark'], 'safe'],
         ];
     }
@@ -59,15 +59,12 @@ class RouteSearch extends Route
         }
 
         $query->andFilterWhere([
-            'title' => $this->title,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-            'remark' => $this->remark,
-            'status' => $this->status,
+            'type' => $this->type,
+            'time_type' => $this->time_type,
+            'route_date' => $this->route_date,
         ]);
 
-        $query->andFilterWhere(['like', 'title',  $this->title])
-            ->andFilterWhere(['like', 'remark', $this->remark]);
+        $query ->andFilterWhere(['like', 'remark', $this->remark]);
 
         return $dataProvider;
     }

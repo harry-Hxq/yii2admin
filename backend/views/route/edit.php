@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use common\core\ActiveForm;
 use kartik\datetime\DateTimePicker;
 
-\backend\assets\EditRouteAsset::register($this);
+\backend\assets\RouteAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Route */
@@ -33,47 +33,24 @@ $this->params['title_sub'] = '添加路线';  // 在\yii\base\View中有$params�
             ]
         ]); ?>
 
-        <?= $form->field($model, 'title')->iconTextInput([
-            'class' => 'form-control c-md-2',
-            'iconPos' => 'left',
-            'iconClass' => 'icon-user',
-            'placeholder' => '请填写标题'
-        ])->label('标题') ?>
+        <?= $form->field($model, 'type')->radioList([
+            '1' => '摩托','2'=>'小车'
+        ])->label('类型') ?>
 
-        <?= $form->field($model, 'start_time')->widget(\kartik\widgets\DateTimePicker::classname(), [
-            'language' => 'zh-CN',
-            'type' => \kartik\widgets\DateTimePicker::TYPE_INPUT,
-            'value' => '2016-07-15',
-            'options' => ['class' => 'form-control'],
-            'pluginOptions' => [
-                'autoclose' => true,
-                'format' => 'yyyy-mm-dd hh:ii',
-            ]
-        ], ['class' => 'c-md-2'])->label('开始时间')->hint('开始时间') ?>
-
-        <?= $form->field($model, 'end_time')->widget(\kartik\widgets\DateTimePicker::classname(), [
-            'language' => 'zh-CN',
-            'type' => \kartik\widgets\DateTimePicker::TYPE_INPUT,
-            //'convertFormat' => 'yyyy-mm-dd',
-            'value' => '2016-07-15',
-            'options' => ['class' => 'form-control'],
-            'pluginOptions' => [
-                'autoclose' => true,
-                'format' => 'yyyy-mm-dd hh:ii'
-            ]
-        ], ['class' => 'c-md-2'])->label('结束时间')->hint('结束时间') ?>
+        <?= $form->field($model, 'time_type')->radioList([
+            '1' => '上午','2'=>'下午','3' => '晚上', '4' => '全天'
+        ])->label('执勤时间') ?>
 
 
         <div class="form-group field-route-remark">
-            <div><label class="" for="route-remark">选择位置</label>
+
+            <div id="r-result" style="width: 100%">选择位置:<input class="form-control" type="text" id="suggestId" size="20" value="百度" style="width:150px;" /></div>
+            <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+
+            <div style="width: 800px;height: 400px" id="allmap">
 
             </div>
-            <div style="width: 800px;height: 400px">
-            <div id="mapContainer"></div>
-                <div id="tip">
-                    <input type="text" id="keyword" name="keyword" value="请输入关键字：(选定后搜索)" onfocus='this.value=""'/>
-                </div>
-            </div>
+
         </div>
 
         <?= $form->field($model, 'remark')->iconTextInput([
@@ -104,66 +81,6 @@ $this->params['title_sub'] = '添加路线';  // 在\yii\base\View中有$params�
         <!-- END FORM-->
     </div>
 </div>
-<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.2&key=5df198198b1005b5800703e7c895f97d"></script>
-<script type="text/javascript">
-
-    var map = new AMap.Map('mapContainer',{
-        resizeEnable: true,
-        zoom: 13,
-        center: [117.0171952227, 25.0750315393]
-    });
-    AMap.plugin('AMap.Geocoder',function(){
-        var geocoder = new AMap.Geocoder({
-            city: "龙岩"//城市，默认：“全国”
-        });
-        var marker = new AMap.Marker({
-            map:map,
-            bubble:true
-        })
-        var input = document.getElementById('keyword');
-        var remark = document.getElementById('remark');
-        var latitude = document.getElementById('latitude');
-        var longitude = document.getElementById('longitude');
-        var message = document.getElementById('message');
-        map.on('click',function(e){
-            marker.setPosition(e.lnglat);
-            geocoder.getAddress(e.lnglat,function(status,result){
-                if(status==='complete'){
-                    console.log(e);
-                    console.log(result);
-                    input.value = result.regeocode.formattedAddress
-                    remark.value = result.regeocode.formattedAddress
-                    latitude.value = e.lnglat.N
-                    longitude.value = e.lnglat.L
-                    message.innerHTML = ''
-                }else{
-                    message.innerHTML = '无法获取地址'
-                }
-            })
-        })
-
-        input.onchange = function(e){
-            var address = input.value;
-            geocoder.getLocation(address,function(status,result){
-                console.log(result);
-                if(status==='complete' && result.geocodes.length){
-                    console.log(result.geocodes[0].location)
-                    marker.setPosition(result.geocodes[0].location);
-                    map.setCenter(marker.getPosition())
-                    remark.value = address
-                    latitude.value = result.geocodes[0].location.N;
-                    longitude.value = result.geocodes[0].location.L;
-                    message.innerHTML = ''
-                }else{
-                    message.innerHTML = '无法获取位置'
-                }
-            })
-        }
-
-    });
-    
-</script>
-<script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
 
 <!-- 定义数据块 -->
 <?php $this->beginBlock('test'); ?>
