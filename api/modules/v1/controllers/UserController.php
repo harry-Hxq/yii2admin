@@ -684,7 +684,7 @@ class UserController extends ActiveController
             switch ($message->MsgType) {
                 case 'event':
                     if ($message->Event == "subscribe") {
-                        $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于小车执勤点与摩托执勤点的公众号。";
+                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天";
                         return new Text(['content'=>$content]);
                     } elseif ($message->Event == "unsubscribe") {
 
@@ -695,7 +695,7 @@ class UserController extends ActiveController
                     }
                     break;
                 case 'text':
-                    $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于小车执勤点与摩托执勤点的公众号。";
+                    $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天";
                     return new Text(['content'=>$content]);
                     break;
                 case 'image':
