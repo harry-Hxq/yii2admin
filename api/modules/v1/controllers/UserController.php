@@ -734,12 +734,12 @@ class UserController extends ActiveController
             ],
             [
                 "type" =>"view",
-                "name"=>"摩托执勤",
+                "name"=>"摩托管制",
                 "url"=>"https://www.xltcwy.cn/routeList"
             ],
             [
                 "type" =>"view",
-                "name"=>"小车执勤",
+                "name"=>"小车管制",
                 "url"=>"https://www.xltcwy.cn/routeList?index=1"
             ]
         ];
