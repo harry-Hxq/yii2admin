@@ -863,7 +863,7 @@ class UserController extends ActiveController
         if($user){
 
             $page = Yii::$app->request->get('page',1);
-            $num = Yii::$app->request->get('num',10);
+            $num = Yii::$app->request->get('num',20);
 
             $motoList = Route::find()
                 ->select(['route_date','type'])

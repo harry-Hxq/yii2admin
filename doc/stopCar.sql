@@ -32,20 +32,24 @@ ALTER TABLE yii2_user ADD COLUMN stopCarStatus TINYINT(1) NOT NULL DEFAULT 1 COM
 --
 -- 行程表的结构 `yii2_route`
 --
-CREATE TABLE IF NOT EXISTS `yii2_route` (
+CREATE TABLE `yii2_route` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `title` char(32) DEFAULT NULL COMMENT '标题',
-  `start_time` INT(11) NOT NULL DEFAULT 0 COMMENT '开始时间',
-  `end_time` INT(11) NOT NULL DEFAULT 0 COMMENT '结束时间',
-  `latitude` DECIMAL(10,6) NOT NULL DEFAULT 0.000000 COMMENT '地理位置纬度',
-  `longitude` DECIMAL(10,6) NOT NULL DEFAULT 0.000000 COMMENT '地理位置经度',
-  `precision` DECIMAL(10,6) NOT NULL DEFAULT 0.000000 COMMENT '地理位置精度',
-  `remark` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备注',
+  `start_time` int(11) NOT NULL DEFAULT '0' COMMENT '开始时间',
+  `end_time` int(11) NOT NULL DEFAULT '0' COMMENT '结束时间',
+  `latitude` varchar(50) NOT NULL DEFAULT '0',
+  `longitude` varchar(50) NOT NULL DEFAULT '0',
+  `precision` decimal(10,6) NOT NULL DEFAULT '0.000000' COMMENT '地理位置精度',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态',
+  `time_type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1上午 2下午 3晚上 执勤时间',
+  `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1摩托车 2小车 执勤点类型',
+  `route_date` int(11) NOT NULL DEFAULT '1' COMMENT '执勤日期（2018-03-01）',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='行程表';
+) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='行程表';
+
 
 --
 -- 用户停车记录 `yii2_user_stop_log`
@@ -124,3 +128,35 @@ CREATE TABLE IF NOT EXISTS `yii2_user_recharge` (
 ALTER TABLE yii2_user_recharge add COLUMN order_id VARCHAR(255) DEFAULT 0 NOT NULL COMMENT '本地orderid';
 ALTER TABLE yii2_user_recharge add COLUMN wx_order_id VARCHAR(255) DEFAULT 0 NOT NULL COMMENT '微信orderid';
 ALTER TABLE yii2_user_recharge add COLUMN wx_order_info_prepare VARCHAR(500) DEFAULT 0 NOT NULL COMMENT '订单信息';
+
+INSERT INTO yii2_route VALUES
+  (30,null,0,0,0,0,0,'11',0,0,0,1,1,1520611200),
+  (31,null,0,0,0,0,0,'11',0,0,0,1,1,1521388800),
+  (32,null,0,0,0,0,0,'11',0,0,0,1,1,1521302400),
+  (33,null,0,0,0,0,0,'11',0,0,0,1,1,1521302400),
+  (34,null,0,0,0,0,0,'11',0,0,0,1,1,1521216000),
+  (35,null,0,0,0,0,0,'11',0,0,0,1,1,1521043200),
+  (36,null,0,0,0,0,0,'11',0,0,0,1,1,1520956800),
+  (37,null,0,0,0,0,0,'11',0,0,0,1,1,1520870400),
+  (38,null,0,0,0,0,0,'11',0,0,0,1,1,1520784000),
+  (39,null,0,0,0,0,0,'11',0,0,0,1,1,1520697600),
+  (40,null,0,0,0,0,0,'11',0,0,0,1,2,1521043200),
+  (41,null,0,0,0,0,0,'11',0,0,0,1,1,1520524800),
+  (42,null,0,0,0,0,0,'11',0,0,0,1,1,1520438400),
+  (43,null,0,0,0,0,0,'11',0,0,0,1,1,1520352000),
+  (44,null,0,0,0,0,0,'11',0,0,0,1,1,1520265600),
+  (45,null,0,0,0,0,0,'11',0,0,0,1,1,1520179200),
+  (46,null,0,0,0,0,0,'11',0,0,0,1,2,1521388800),
+  (47,null,0,0,0,0,0,'11',0,0,0,1,2,1521302400),
+  (48,null,0,0,0,0,0,'11',0,0,0,1,2,1521302400),
+  (49,null,0,0,0,0,0,'11',0,0,0,1,2,1521216000),
+  (50,null,0,0,0,0,0,'11',0,0,0,1,2,1520179200),
+  (51,null,0,0,0,0,0,'11',0,0,0,1,2,1520956800),
+  (52,null,0,0,0,0,0,'11',0,0,0,1,2,1520870400),
+  (53,null,0,0,0,0,0,'11',0,0,0,1,2,1520784000),
+  (54,null,0,0,0,0,0,'11',0,0,0,1,2,1520697600),
+  (55,null,0,0,0,0,0,'11',0,0,0,1,2,1520611200),
+  (56,null,0,0,0,0,0,'11',0,0,0,1,2,1520524800),
+  (57,null,0,0,0,0,0,'11',0,0,0,1,2,1520438400),
+  (58,null,0,0,0,0,0,'11',0,0,0,1,2,1520352000),
+  (59,null,0,0,0,0,0,'11',0,0,0,1,2,1520265600)
