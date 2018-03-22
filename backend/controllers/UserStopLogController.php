@@ -123,7 +123,7 @@ class UserStopLogController extends BaseController
 
     /**
      * ---------------------------------------
-     * 编辑摩托车执勤位置
+     * 编辑摩托车管制位置
      * ---------------------------------------
      */
     public function actionMotoList(){

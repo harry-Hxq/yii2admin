@@ -272,7 +272,7 @@ class UserController extends ActiveController
                         $userTip -> create_time = $now;
                         $userTip -> save();
 
-                        return ['code' => 200, 'msg' => '附近存在交警执勤，当前位置停车不安全'];break;
+                        return ['code' => 200, 'msg' => '附近存在交警管制，当前位置停车不安全'];break;
                     }
                 }
             }else{
@@ -795,7 +795,7 @@ class UserController extends ActiveController
     }
 
     /**
-     * 获取摩托车执勤点
+     * 获取摩托车管制点
      */
     public function actionMotoList(){
         $userStopLog = Moto::find()->select(['latitude','longitude','start_time','end_time'])->asArray()->all();
@@ -807,7 +807,7 @@ class UserController extends ActiveController
 
     /**
      * ---------------------------------------
-     * 添加/编辑摩托车执勤位置
+     * 添加/编辑摩托车管制位置
      * ---------------------------------------
      */
     public function actionEditMoto(){
@@ -848,7 +848,7 @@ class UserController extends ActiveController
 
 
     /**
-     * 获取摩托车/小车执勤列表
+     * 获取摩托车/小车管制列表
      * @method get
      * @param string $token
      * @param int $type
@@ -888,7 +888,7 @@ class UserController extends ActiveController
 
 
     /**
-     * 获取摩托车/小车执勤点
+     * 获取摩托车/小车管制点
      * @method get
      * @param string $token
      * @param int $id

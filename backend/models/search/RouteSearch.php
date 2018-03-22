@@ -18,8 +18,8 @@ class RouteSearch extends Route
     public function rules()
     {
         return [
-            [['route_date', 'type', 'time_type', 'remark'], 'integer'],
-            [['remark'], 'safe'],
+            [[ 'type', 'time_type', 'remark'], 'integer'],
+            [['remark','route_date'], 'safe'],
         ];
     }
 
@@ -57,14 +57,18 @@ class RouteSearch extends Route
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $query -> orderBy('route_date desc');
         $query->andFilterWhere([
             'type' => $this->type,
             'time_type' => $this->time_type,
-            'route_date' => $this->route_date,
         ]);
+        if($this -> route_date){
+            $query ->andFilterWhere(['route_date' => strtotime($this->route_date)]);
+        }
 
         $query ->andFilterWhere(['like', 'remark', $this->remark]);
+
+
 
         return $dataProvider;
     }

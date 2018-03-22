@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `yii2_user_tip` (
 
 
 --
--- 摩托车执勤点 `yii2_moto`
+-- 摩托车管制点 `yii2_moto`
 --
 CREATE TABLE IF NOT EXISTS `yii2_moto` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',

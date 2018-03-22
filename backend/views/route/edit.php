@@ -33,13 +33,22 @@ $this->params['title_sub'] = '添加路线';  // 在\yii\base\View中有$params�
             ]
         ]); ?>
 
+        <?=$form->field($model, 'route_date')->widget(
+            \kartik\date\DatePicker::classname(), [
+            'options' => ['placeholder' => '全部','value' => $model['route_date'] ? date("Y-m-d",$model['route_date']) : date("Y-m-d")],
+            'pluginOptions' => [
+                'autoclose' => true,
+                'todayHighlight' => true,
+                'format' => 'yyyy-mm-dd',
+            ]
+        ])->label('日期'); ?>
         <?= $form->field($model, 'type')->radioList([
             '1' => '摩托','2'=>'小车'
         ])->label('类型') ?>
 
         <?= $form->field($model, 'time_type')->radioList([
             '1' => '上午','2'=>'下午','3' => '晚上', '4' => '全天'
-        ])->label('执勤时间') ?>
+        ])->label('管制时间') ?>
 
 
         <div class="form-group field-route-remark">
