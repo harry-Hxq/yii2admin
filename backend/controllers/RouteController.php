@@ -54,6 +54,7 @@ class RouteController extends BaseController
             /* 表单验证 */
             $data = Yii::$app->request->post('Route');
             $data['route_date'] = strtotime($data['route_date']);
+            var_dump($data['route_date']);exit;
             $model->setAttributes($data);
             /* 保存用户数据到数据库 */
             if ($model->save()) {
