@@ -15,6 +15,7 @@ use common\helpers\FuncHelper;
 use common\helpers\Sms;
 use common\helpers\Wechat;
 use common\modelsgii\UserRecharge;
+use EasyWeChat\Message\News;
 use EasyWeChat\Message\Text;
 use EasyWeChat\Payment\Order;
 use yii\base\Exception;
@@ -684,8 +685,16 @@ class UserController extends ActiveController
             switch ($message->MsgType) {
                 case 'event':
                     if ($message->Event == "subscribe") {
-                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
-                        return new Text(['content'=>$content]);
+
+                        $news = new News([
+                            'title'       => "停车无忧——关注您出行路上的每一天",
+                            'description' => "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！",
+                            'url'         => 'https://www.xltcwy.cn/routeList',
+                            'image'       => 'http://i2.bvimg.com/574778/36d6e843f12e088b.png',
+                        ]);
+
+//                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
+                        return $news;
                     } elseif ($message->Event == "unsubscribe") {
 
                     } elseif ($message->Event == "CLICK") {
@@ -695,8 +704,16 @@ class UserController extends ActiveController
                     }
                     break;
                 case 'text':
-                    $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
-                    return new Text(['content'=>$content]);
+
+                    $news = new News([
+                        'title'       => "停车无忧——关注您出行路上的每一天",
+                        'description' => "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！",
+                        'url'         => 'https://www.xltcwy.cn/routeList',
+                        'image'       => 'http://i2.bvimg.com/574778/36d6e843f12e088b.png',
+                    ]);
+
+//                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
+                    return $news;
                     break;
                 case 'image':
                     break;
