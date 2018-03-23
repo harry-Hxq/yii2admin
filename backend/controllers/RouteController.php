@@ -53,7 +53,7 @@ class RouteController extends BaseController
         if (Yii::$app->request->isPost) {
             /* 表单验证 */
             $data = Yii::$app->request->post('Route');
-            $data['route_date'] = strtotime(date("Y-m-d"));
+            $data['route_date'] = strtotime($data['route_date']);
             $model->setAttributes($data);
             /* 保存用户数据到数据库 */
             if ($model->save()) {
@@ -80,6 +80,7 @@ class RouteController extends BaseController
         if (Yii::$app->request->isPost) {
             /* 表单验证 */
             $data = Yii::$app->request->post('Route');
+            $data['route_date'] = strtotime($data['route_date']);
 
             $model->setAttributes($data);
             /* 保存用户数据到数据库 */

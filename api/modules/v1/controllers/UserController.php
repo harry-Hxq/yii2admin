@@ -15,6 +15,7 @@ use common\helpers\FuncHelper;
 use common\helpers\Sms;
 use common\helpers\Wechat;
 use common\modelsgii\UserRecharge;
+use EasyWeChat\Message\News;
 use EasyWeChat\Message\Text;
 use EasyWeChat\Payment\Order;
 use yii\base\Exception;
@@ -271,7 +272,7 @@ class UserController extends ActiveController
                         $userTip -> create_time = $now;
                         $userTip -> save();
 
-                        return ['code' => 200, 'msg' => '附近存在交警执勤，当前位置停车不安全'];break;
+                        return ['code' => 200, 'msg' => '附近存在交警管制，当前位置停车不安全'];break;
                     }
                 }
             }else{
@@ -684,8 +685,16 @@ class UserController extends ActiveController
             switch ($message->MsgType) {
                 case 'event':
                     if ($message->Event == "subscribe") {
-                        $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于小车执勤点单与摩托执勤点的公众号。";
-                        return new Text(['content'=>$content]);
+
+                        $news = new News([
+                            'title'       => "停车无忧——关注您出行路上的每一天",
+                            'description' => "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！",
+                            'url'         => 'https://www.xltcwy.cn/routeList',
+                            'image'       => 'http://i2.bvimg.com/574778/36d6e843f12e088b.png',
+                        ]);
+
+//                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
+                        return $news;
                     } elseif ($message->Event == "unsubscribe") {
 
                     } elseif ($message->Event == "CLICK") {
@@ -695,8 +704,16 @@ class UserController extends ActiveController
                     }
                     break;
                 case 'text':
-                    $content =  "亲 终于等到您！想随时随地放心停车?骑车出行想看看哪里有执勤?就选停车无忧。因为这是个关于小车执勤点单与摩托执勤点的公众号。";
-                    return new Text(['content'=>$content]);
+
+                    $news = new News([
+                        'title'       => "停车无忧——关注您出行路上的每一天",
+                        'description' => "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！",
+                        'url'         => 'https://www.xltcwy.cn/routeList',
+                        'image'       => 'http://i2.bvimg.com/574778/36d6e843f12e088b.png',
+                    ]);
+
+//                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
+                    return $news;
                     break;
                 case 'image':
                     break;
@@ -729,18 +746,18 @@ class UserController extends ActiveController
         $data = [
             [
                 "type" =>"view",
-                "name"=>"摩托执勤",
+                "name"=>"使用说明",
+                "url"=>"https://www.xltcwy.cn/explain"
+            ],
+            [
+                "type" =>"view",
+                "name"=>"摩托管制",
                 "url"=>"https://www.xltcwy.cn/routeList"
             ],
             [
                 "type" =>"view",
-                "name"=>"小车执勤",
+                "name"=>"小车管制",
                 "url"=>"https://www.xltcwy.cn/routeList?index=1"
-            ],
-            [
-                "type" =>"view",
-                "name"=>"使用说明",
-                "url"=>"https://www.xltcwy.cn/explain"
             ]
         ];
         $wechat = Wechat::wxInit();
@@ -778,7 +795,7 @@ class UserController extends ActiveController
     }
 
     /**
-     * 获取摩托车执勤点
+     * 获取摩托车管制点
      */
     public function actionMotoList(){
         $userStopLog = Moto::find()->select(['latitude','longitude','start_time','end_time'])->asArray()->all();
@@ -790,7 +807,7 @@ class UserController extends ActiveController
 
     /**
      * ---------------------------------------
-     * 添加/编辑摩托车执勤位置
+     * 添加/编辑摩托车管制位置
      * ---------------------------------------
      */
     public function actionEditMoto(){
@@ -831,7 +848,7 @@ class UserController extends ActiveController
 
 
     /**
-     * 获取摩托车/小车执勤列表
+     * 获取摩托车/小车管制列表
      * @method get
      * @param string $token
      * @param int $type
@@ -846,7 +863,7 @@ class UserController extends ActiveController
         if($user){
 
             $page = Yii::$app->request->get('page',1);
-            $num = Yii::$app->request->get('num',10);
+            $num = Yii::$app->request->get('num',20);
 
             $motoList = Route::find()
                 ->select(['route_date','type'])
@@ -871,7 +888,7 @@ class UserController extends ActiveController
 
 
     /**
-     * 获取摩托车/小车执勤点
+     * 获取摩托车/小车管制点
      * @method get
      * @param string $token
      * @param int $id

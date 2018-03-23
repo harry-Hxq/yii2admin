@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\UserSearch */
@@ -17,14 +18,28 @@ use yii\widgets\ActiveForm;
     ]
 ]); ?>
 <div class="row">
+
+    <div class="col-md-2">
+        <?=$form->field($model, 'route_date')->widget(
+            DatePicker::classname(), [
+            'options' => ['placeholder' => '全部'],
+            'pluginOptions' => [
+                'autoclose' => true,
+                'todayHighlight' => true,
+                'format' => 'yyyy-mm-dd',
+            ]
+        ])->label('日期'); ?>
+    </div>
+
     <div class="col-md-2">
     <?= $form->field($model, 'remark')->textInput()->label('请输入位置') ?>
     </div>
+
     <div class="col-md-2">
-        <?=$form->field($model, 'type')->dropDownList([''=>'全部',1=>'摩托',2=>'小车'],['class'=>'form-control'])->label('执勤类型'); ?>
+        <?=$form->field($model, 'type')->dropDownList([''=>'全部',1=>'摩托',2=>'小车'],['class'=>'form-control'])->label('管制类型'); ?>
     </div>
     <div class="col-md-2">
-        <?=$form->field($model, 'time_type')->dropDownList([''=>'全部',1=>'上午',2=>'下午',3=>'晚上',4=>'全天'],['class'=>'form-control'])->label('执勤时间'); ?>
+        <?=$form->field($model, 'time_type')->dropDownList([''=>'全部',1=>'上午',2=>'下午',3=>'晚上',4=>'全天'],['class'=>'form-control'])->label('管制时间'); ?>
     </div>
 
     <div class="col-md-2">

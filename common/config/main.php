@@ -8,6 +8,8 @@ return [
     /* 目标语言 */
     'language' => 'zh-CN',
 
+    'timeZone' => 'PRC',
+
     'components' => [
         'cache' => [
 //            'class' => 'yii\caching\FileCache',

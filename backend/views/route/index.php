@@ -25,7 +25,13 @@ $columns = [
         }
     ],
     [
-        'header' => '执勤类型',
+        'header' => '日期',
+        'attribute' => 'route_date',
+        'options' => ['width' => '150px;'],
+        'format' => ['date', 'php:Y-m-d']
+    ],
+    [
+        'header' => '管制类型',
         'attribute' => 'title',
         'options' => ['width' => '150px;'],
         'content' => function($model){
@@ -34,7 +40,7 @@ $columns = [
         }
     ],
     [
-        'header' => '执勤时间点',
+        'header' => '管制时间点',
         'attribute' => 'start_time',
         'options' => ['width' => '150px;'],
         'content' => function($model){
