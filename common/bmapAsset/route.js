@@ -7,10 +7,27 @@ function G(id) {
 }
 var marker = {}
 var map = new BMap.Map("allmap");
-var point = new BMap.Point(117.02147, 25.118569);
-map.centerAndZoom(point, 15);
-map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-map.setCurrentCity("龙岩");// 初始化地图,设置城市和地图级别。
+
+var latitude = $("#latitude").val();
+var longitude = $("#longitude").val();
+var point = {};
+if(latitude && longitude){
+    point = new BMap.Point(longitude, latitude);
+    map.centerAndZoom(point, 15);
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    map.setCurrentCity("龙岩");// 初始化地图,设置城市和地图级别。
+    marker = new BMap.Marker(point)
+    map.addOverlay(marker);    //添加标注
+
+}else{
+    point = new BMap.Point(117.02147, 25.118569);
+    map.centerAndZoom(point, 15);
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    map.setCurrentCity("龙岩");// 初始化地图,设置城市和地图级别。
+}
+
+
+
     var geoc = new BMap.Geocoder();  //位置转换
     function showInfo(e){
         geoc.getLocation(e.point, function(rs){
