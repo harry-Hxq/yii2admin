@@ -51,6 +51,28 @@ $this->params['title_sub'] = '添加路线';  // 在\yii\base\View中有$params�
         ])->label('管制时间') ?>
 
 
+        <?= $form->field($model, 'time_type')->selectList([
+            '1' => '上午','2'=>'下午','3' => '晚上', '4' => '全天'
+        ])->label('管制时间') ?>
+
+        <div class="form-group field-route-time_type required has-success">
+            <div>
+                <label class="" for="route-time_type">常用地点</label>
+            </div>
+            <div class="">
+                <select id="address_map" onchange="selectMap(this.options[selectedIndex])" class="form-control c-md-4" name="address_map" >
+                    <?php
+                    $address_map = \backend\models\RouteMap::find()->select(['latitude','longitude','remark'])->asArray()->all();
+                    foreach ($address_map as $k=>$address){
+                    ?>
+                    <option value="<?php echo $address['latitude'].",".$address['longitude'] ?>"><?php echo $address['remark'] ?></option>
+                    <?php } ?>
+
+                </select>
+            </div>
+            <span class="help-block"></span>
+        </div>
+
         <div class="form-group field-route-remark">
 
             <div id="r-result" style="width: 100%">选择位置:<input class="form-control" type="text" id="suggestId" size="20" value="百度" style="width:150px;" /></div>
