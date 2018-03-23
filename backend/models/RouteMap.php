@@ -43,7 +43,7 @@ class RouteMap extends \common\modelsgii\RouteMap
     public function rules()
     {
         return [
-            [['type','time_type','remark','latitude','longitude','route_date'], 'required'],
+            [['remark','latitude','longitude'], 'required'],
             [['remark'], 'string', 'max' => 255],
         ];
     }
