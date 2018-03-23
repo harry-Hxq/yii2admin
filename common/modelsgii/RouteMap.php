@@ -22,7 +22,7 @@ class RouteMap extends \common\core\BaseActiveRecord
      */
     public static function tableName()
     {
-        return '{{%route}}';
+        return '{{%route_map}}';
     }
 
     /**
