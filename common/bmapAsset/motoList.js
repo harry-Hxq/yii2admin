@@ -39,7 +39,7 @@ map.addEventListener("click", function (e) {
         address = rs.address;
         latitude = e.point.lat;
         longitude = e.point.lng;
-        $("#address").text(rs.address)
+        $("#address").val(rs.address)
         $("#confirmMoto").modal('show');
 
     });

@@ -690,7 +690,7 @@ class UserController extends ActiveController
                             'title'       => "停车无忧——关注您出行路上的每一天",
                             'description' => "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！",
                             'url'         => 'https://www.xltcwy.cn/routeList',
-                            'image'       => 'http://i2.bvimg.com/574778/36d6e843f12e088b.png',
+                            'image'       => 'http://api.xltcwy.cn/storage/image/201803/1521788425321.png',
                         ]);
 
 //                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
@@ -709,7 +709,7 @@ class UserController extends ActiveController
                         'title'       => "停车无忧——关注您出行路上的每一天",
                         'description' => "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！",
                         'url'         => 'https://www.xltcwy.cn/routeList',
-                        'image'       => 'http://i2.bvimg.com/574778/36d6e843f12e088b.png',
+                        'image'       => 'http://api.xltcwy.cn/storage/image/201803/1521788425321.png',
                     ]);
 
 //                        $content =  "哪个地方有点堵？\n哪个地方在修路？ \n哪个地方有临时交通管制？\n停车无忧——关注您出行路上的每一天，让您无忧出行！";
