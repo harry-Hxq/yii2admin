@@ -42,16 +42,12 @@ $this->params['title_sub'] = '添加路线';  // 在\yii\base\View中有$params�
                 'format' => 'yyyy-mm-dd',
             ]
         ])->label('日期'); ?>
+
         <?= $form->field($model, 'type')->radioList([
             '1' => '摩托','2'=>'小车'
         ])->label('类型') ?>
 
         <?= $form->field($model, 'time_type')->radioList([
-            '1' => '上午','2'=>'下午','3' => '晚上', '4' => '全天'
-        ])->label('管制时间') ?>
-
-
-        <?= $form->field($model, 'time_type')->selectList([
             '1' => '上午','2'=>'下午','3' => '晚上', '4' => '全天'
         ])->label('管制时间') ?>
 
