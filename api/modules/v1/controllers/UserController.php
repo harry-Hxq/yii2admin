@@ -776,18 +776,18 @@ class UserController extends ActiveController
         $data = [
             [
                 "type" =>"view",
-                "name"=>"使用说明",
+                "name"=>"说明",
                 "url"=>"https://www.xltcwy.cn/explain"
             ],
             [
                 "type" =>"view",
-                "name"=>"摩托管制",
+                "name"=>"管制",
                 "url"=>"https://www.xltcwy.cn/routeList"
             ],
             [
                 "type" =>"view",
-                "name"=>"小车管制",
-                "url"=>"https://www.xltcwy.cn/routeList?index=1"
+                "name"=>"会员中心",
+                "url"=>"https://www.xltcwy.cn/uc"
             ]
         ];
         $wechat = Wechat::wxInit();
