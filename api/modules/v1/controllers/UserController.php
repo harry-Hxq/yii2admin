@@ -68,6 +68,7 @@ class UserController extends ActiveController
                 'edit-moto',
                 'route-list',
                 'route-dot',
+                'get-days',
             ]
         ];
         return $behaviors;
@@ -125,26 +126,27 @@ class UserController extends ActiveController
     {
         $user = User::findIdentityByAccessToken($token);
         if($user){
-
-            if($user->stop_car_status == 2){
-                $userStopLog = UserStopLog::find()->where(['uid' => $user->uid,'status' => 2]) ->one();
-            }
+//
+//            if($user->stop_car_status == 2){
+//                $userStopLog = UserStopLog::find()->where(['uid' => $user->uid,'status' => 2]) ->one();
+//            }
 
             $userInfo =  [
                 'id' => $user->uid,
                 'plate_num' => $user->plate_num,
                 'mobile' => $user->mobile,
-                'is_vip' => $user->is_vip,
+//                'is_vip' => $user->is_vip,
                 'openid' => $user->openid,
-                'reg_vip_time' => $user->reg_vip_time,
-                'deadline' => max(intval((strtotime(date("Y-m-d",$user->reg_vip_time))+(86400 * 365) -time()) / 86400),1),
+//                'reg_vip_time' => $user->reg_vip_time,
+                'deadline' => $user->deadline,
                 'headimg' => $user->headimg,
                 'username' => $user->username,
-                'stop_car_status' => intval($user->stop_car_status),
-                'lat' => isset($userStopLog->latitude) ? floatval($userStopLog->latitude) : 0,
-                'lng' => isset($userStopLog->longitude) ? floatval($userStopLog->longitude) : 0,
-                'address' => isset($userStopLog->remark) ? $userStopLog->remark : '',
-                'is_tip' => isset($userStopLog->is_tip) ? intval($userStopLog->is_tip) : 1,
+                'is_news' => $user->is_news,
+//                'stop_car_status' => intval($user->stop_car_status),
+//                'lat' => isset($userStopLog->latitude) ? floatval($userStopLog->latitude) : 0,
+//                'lng' => isset($userStopLog->longitude) ? floatval($userStopLog->longitude) : 0,
+//                'address' => isset($userStopLog->remark) ? $userStopLog->remark : '',
+//                'is_tip' => isset($userStopLog->is_tip) ? intval($userStopLog->is_tip) : 1,
             ];
             return ['code' => 200, 'msg' => 'ok' ,'data' =>  $userInfo];
         }
@@ -425,10 +427,31 @@ class UserController extends ActiveController
                     $sql = sprintf("update yii2_user_recharge set status = %d where order_id = '%s';",UserRecharge::STATUS_PAID_SUCCESS, $notify->out_trade_no);
                     $db->createCommand($sql)->execute();
 
-                    // 改变用户为vip会员，
-                    $updateUserSql =  sprintf("update yii2_user set is_vip = %d,reg_vip_time = %d where uid = %d;",1, time(),$wx_order['uid']);
-                    $db->createCommand($updateUserSql)->execute();
+//                    // 改变用户为vip会员，
+//                    $updateUserSql =  sprintf("update yii2_user set is_vip = %d,reg_vip_time = %d where uid = %d;",1, time(),$wx_order['uid']);
+//                    $db->createCommand($updateUserSql)->execute();
 
+                    // 增加会员的过期时间
+                    if($wx_order['money_type'] == 1){ //增加1个月
+                        $add_time = 68400 * 30;
+                    }elseif($wx_order['money_type'] == 2){ //增加3个月
+                        $add_time = 68400 * 90;
+                    }elseif($wx_order['money_type'] == 3){ //增加6个月
+                        $add_time = 68400 * 180;
+                    }elseif($wx_order['money_type'] == 4){ //增加一年
+                        $add_time = 68400 * 365;
+                    }elseif($wx_order['money_type'] == 5){ //将过期时间设置成后一天
+                        $add_time = strtotime(date("Y-m-d"))+86400;
+                    }else{
+                        return '系统错误';
+                    }
+                    if($wx_order['total_fee'] == 100){
+                        $updateUserSql =  sprintf("update yii2_user set deadline = %d where uid = %d;",$add_time,$wx_order['uid']);
+                    }else{
+                        $updateUserSql =  sprintf("update yii2_user set deadline = deadline+%d where uid = %d;",$add_time,$wx_order['uid']);
+                    }
+
+                    $db->createCommand($updateUserSql)->execute();
 
                     Yii::info(sprintf("success to pay for order id %d in data(%s)",$notify->out_trade_no,$date),__METHOD__);
                     return true;
@@ -478,9 +501,10 @@ class UserController extends ActiveController
      */
     public function actionPayLocalOrder(){
         $token = Yii::$app->request->get('token');
+        $money_type = Yii::$app->request->get('money_type');
         $user = User::findIdentityByAccessToken($token);
         if($user){
-            return $this->_pay_local_order($user);
+            return $this->_pay_local_order($user,$money_type);
         }
 
     }
@@ -494,11 +518,16 @@ class UserController extends ActiveController
         return ["code"=>200, "msg"=>'ok', "data"=>$wx_config];
 
     }
-    private function _pay_local_order($user) {
+    private function _pay_local_order($user,$money_type) {
+        if(!in_array($money_type,['1','2','3','4','5'])){
+            return ["code"=>-1, "msg"=>'系统错误'];
+        }
         $order_id = Wechat::genOrderId($user['openid']); // 本地的open id
         $wx_order = new UserRecharge();
         $wx_order->uid = $user['uid'];
         $wx_order->order_id = $order_id;
+        $wx_order->total_fee = Yii::$app->params['MONEY_TYPE'][$money_type];
+        $wx_order->money_type = $money_type;
         $wx_order->wx_order_id = '';
         $wx_order->openid = $user['openid'];
         $wx_order->status = UserRecharge::STATUS_PAID_LOCAL; //订单本地状态
@@ -531,12 +560,14 @@ class UserController extends ActiveController
             // 生成一个微信订单
             $wx_payment = Wechat::construct_wx_payment();
 
+            $wx_order = UserRecharge::find()->where(['order_id' => $order_id])->one();
+
             $attributes = [
                 'trade_type'       => 'JSAPI', // JSAPI，NATIVE，APP...
                 'body'             => '停车服务年费',
                 'detail'           => '停车服务年费',
                 'out_trade_no'     => $order_id,
-                'total_fee'        => 11800, // 单位：固定1元，使用分为单位
+                'total_fee'        => $wx_order['total_fee'], // 单位：固定1元，使用分为单位
                 'notify_url'       => Yii::$app->params['WX_PAY']['PAY_NOTIFY_URL'], // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'openid'           => $user['openid'], // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             ];
@@ -549,11 +580,10 @@ class UserController extends ActiveController
 
             $wx_order_id = $result->prepay_id;
 
-            $wx_order = UserRecharge::find()->where(['order_id' => $order_id])->one();
+
             if($wx_order){
 
                 $wx_order->wx_order_id = $wx_order_id;
-                $wx_order->total_fee = 11800;
                 $wx_order->wx_order_info_prepare = json_encode($result);
                 $wx_order->status = UserRecharge::STATUS_PAID_WECHAT; //订单微信状态
                 $wx_order->update_time = time();
@@ -909,6 +939,27 @@ class UserController extends ActiveController
                 ->asArray()
                 ->all();
             return ["code"=>200,"msg" => 'ok',"data" =>$motoDotList ];
+        }
+    }
+
+
+
+    /**
+     * 用户领取体验天数
+     * @method get
+     * @param string $token
+     * @return array
+     */
+    public function actionGetDays(){
+
+        $token = Yii::$app->request->get('token');
+        $user = User::findIdentityByAccessToken($token);
+        if($user){
+
+            $user -> is_news = 1;
+            $user -> deadline = strtotime(date("Y-m-d"))+(86400*8);
+            $user -> save(false);
+            return ["code"=>200,"msg" => 'ok' ];
         }
     }
 

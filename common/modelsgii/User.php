@@ -30,6 +30,8 @@ use Yii;
  * @property integer $reg_vip_time
  * @property integer $headimg
  * @property integer $stop_car_status
+ * @property integer $deadline
+ * @property integer $is_news
  */
 class User extends \common\core\BaseActiveRecord
 {
