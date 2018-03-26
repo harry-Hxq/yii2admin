@@ -776,17 +776,17 @@ class UserController extends ActiveController
         $data = [
             [
                 "type" =>"view",
-                "name"=>"说明",
+                "name"=>"使用说明",
                 "url"=>"https://www.xltcwy.cn/explain"
             ],
             [
                 "type" =>"view",
-                "name"=>"管制",
+                "name"=>"交通管制",
                 "url"=>"https://www.xltcwy.cn/routeList"
             ],
             [
                 "type" =>"view",
-                "name"=>"会员",
+                "name"=>"会员中心",
                 "url"=>"https://www.xltcwy.cn/uc"
             ]
         ];
