@@ -786,7 +786,7 @@ class UserController extends ActiveController
             ],
             [
                 "type" =>"view",
-                "name"=>"会员中心",
+                "name"=>"会员",
                 "url"=>"https://www.xltcwy.cn/uc"
             ]
         ];
