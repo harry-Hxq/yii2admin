@@ -445,7 +445,7 @@ class UserController extends ActiveController
                     }else{
                         return '系统错误';
                     }
-                    if($wx_order['total_fee'] == 100){
+                    if($wx_order['money_type'] == 5){
                         $updateUserSql =  sprintf("update yii2_user set deadline = %d where uid = %d;",$add_time,$wx_order['uid']);
                     }else{
                         $updateUserSql =  sprintf("update yii2_user set deadline = deadline+%d where uid = %d;",$add_time,$wx_order['uid']);
