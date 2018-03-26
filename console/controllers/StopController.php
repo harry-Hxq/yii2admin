@@ -18,6 +18,7 @@ class StopController extends Controller
      */
     public function actionUpdateUser()
     {
+        Yii::info("start to update user",__METHOD__);
         $db = Yii::$app->db;
         $now = strtotime(date("Y-m-d")) - 86400;
         $raw_sql = sprintf("update yii2_user set deadline = %d WHERE deadline = %d;",0, $now);
