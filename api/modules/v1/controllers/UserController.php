@@ -957,7 +957,7 @@ class UserController extends ActiveController
         if($user){
 
             $user -> is_news = 1;
-            $user -> deadline = strtotime(date("Y-m-d"))+(86400*8);
+            $user -> deadline = strtotime(date("Y-m-d"))+(86400*4);
             $user -> save(false);
             return ["code"=>200,"msg" => 'ok' ];
         }
