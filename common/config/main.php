@@ -24,6 +24,20 @@ return [
             'database' => 1
         ],
 
+        'db2' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => env('DB_DSN2','mysql:host=127.0.0.1;port=3306;dbname=xiangmu1'),
+            'username' => env('DB_USERNAME2','root'),
+            'password' => env('DB_PASSWORD2','root'),
+            'charset' => env('DB_CHARSET2','utf8'),
+            'tablePrefix' => env('DB_TABLE_PREFIX2','fn_'),
+            'emulatePrepare' => true,
+            'enableSchemaCache' => false,
+            'schemaCache' => 'dataCache',
+            'queryCache' => 'dataCache',
+        ],
+
+
         /**
          * 多语言管理，
          * 将“源语言”翻译成“目标语言”，必须使用\Yii::t('common','中文')，当源语言和目标语言相同时默认不翻译
