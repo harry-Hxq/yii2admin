@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models\Pc\search;
+namespace backend\models\Pc\Search;
 
 use backend\models\Pc\Room;
 use Yii;
