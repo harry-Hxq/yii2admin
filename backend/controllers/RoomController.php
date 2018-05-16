@@ -4,7 +4,10 @@ namespace backend\controllers;
 
 use backend\models\Pc\Room;
 use backend\models\Pc\Search\RoomSearch;
+use kartik\form\ActiveForm;
 use Yii;
+use yii\web\Response;
+
 /**
  * 路线控制器
  * @author longfei <phphome@qq.com>
@@ -19,6 +22,16 @@ class RoomController extends BaseController
     public function init()
     {
         parent::init();
+    }
+
+    /**
+     * ---------------------------------------
+     * 控制台
+     * ---------------------------------------
+     */
+    public function actionManager()
+    {
+        return $this->render('manager');
     }
 
     /**
@@ -52,9 +65,10 @@ class RoomController extends BaseController
         if (Yii::$app->request->isPost) {
             /* 表单验证 */
             $data = Yii::$app->request->post('Room');
-
             $data['agent'] = 'Xsoul';
             $data['version'] = '尊享版';
+            $data['roompassshow'] = $data['roompass'];
+            $data["roomname"] = "未来科技娱乐房间";
             $data['roompass'] = md5($data['roompass']);
 
             $data['roomtime'] = $this->_getRoomtime($data['roomtime']);
@@ -67,6 +81,7 @@ class RoomController extends BaseController
                 $this->_setRoomDefault($roomid);
                 $this->success('操作成功', $this->getForward());
             } else {
+
                 $this->error('操作错误');
             }
         }
@@ -74,6 +89,18 @@ class RoomController extends BaseController
         return $this->render('add', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRoomValidate(){
+        $model = new Room();
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+    }
+
+    public function _existRoomadmin($roomadmin){
+        return Room::find()->where(['roomadmin' => $roomadmin])->one();
     }
 
 
@@ -151,6 +178,12 @@ class RoomController extends BaseController
             return date("Y-m-d 23:23:59", strtotime("+99 month"));
         } elseif ($roomtime == -1) {
             return date("Y-m-d 23:23:59", strtotime("+1 day"));
+        }  elseif ($roomtime == -2) {
+            return date("Y-m-d H:i:s",time()+3600); //1小时
+        }  elseif ($roomtime == -3) {
+            return date("Y-m-d H:i:s",time()+7200); //2小时
+        }  elseif ($roomtime == -4) {
+            return date("Y-m-d H:i:s",time()+10800); //3小时
         } else {
             return date("Y-m-d 23:23:59", strtotime("+1 month"));
         }
@@ -183,7 +216,7 @@ class RoomController extends BaseController
 
         $dbpc->createCommand("INSERT INTO `fn_setting` (`id`, `roomid`, `setting_game`, `setting_wordkeys`, `setting_kefu`, `setting_cancelbet`, `setting_ischat`, `setting_tishi`, `setting_video`, `setting_qrcode`, `setting_people`, `setting_sysimg`, `setting_robotsimg`, `setting_robots`, `setting_robot_min`, `setting_robot_max`, `setting_robot_pointmin`, `setting_robot_pointmax`, `setting_templates`, `setting_flyorder`, `setting_downmark`, `display_custom`, `display_extend`, `display_plan`, `display_game`, `msg1_time`, `msg1_cont`, `msg2_time`, `msg2_cont`, `msg3_time`, `msg3_cont`, `flyorder_type`, `flyorder_user`, `flyorder_pass`, `flyorder_site`, `flyorder_session`, `flyorder_duichong`, `flyorder_pk10`, `flyorder_xyft`, `flyorder_cqssc`) VALUES(" . $room . ", " . $room . ", 'pk10', '垃圾|操|傻逼|黑|艹|妈|娘|逼|日', '欢迎光临，未来娱乐城。 上下分请添加客服微信', 'disable', 'open', 'open', '未来娱乐系统', '/upload/201710251508918115.png', 320, '/upload/201710251508917502.png', '/upload/201710251508917501.png', 0, 0, 15, 0, 300, 'old', 'false', '0', 'true', 'true', 'true', 'true', 0, '0', 0, '0', 0, '0', '0', '0', '0', '0', '0', 'false', 'false', 'false', 'false')")->execute();
 
-        $dbpc -> createCommand() ->update("fn_room",["roomid" => $room,"roomname"=>"未来科技娱乐房间"],["id" => $room])->execute();
+        $dbpc -> createCommand() ->update("fn_room",["roomid" => $room],["id" => $room])->execute();
 
     }
 

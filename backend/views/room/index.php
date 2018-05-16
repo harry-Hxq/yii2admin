@@ -27,25 +27,35 @@ $columns = [
     [
         'header' => '房间id',
         'attribute' => 'roomid',
-        'options' => ['width' => '150px;'],
 //        'format' => ['date', 'php:Y-m-d']
     ],
     [
         'header' => '房间名字',
         'attribute' => 'roomname',
-        'options' => ['width' => '150px;'],
 //        'format' => ['date', 'php:Y-m-d']
     ],
     [
         'header' => '房间账户',
         'attribute' => 'roomadmin',
-        'options' => ['width' => '150px;'],
 //        'format' => ['date', 'php:Y-m-d']
+    ],
+    [
+        'header' => '总人数',
+        'attribute' => 'roomadmin',
+        'content' => function($model){
+             return \backend\models\Pc\Room::getRoomUserTotal($model['id']);
+        }
+    ],
+    [
+        'header' => '在线人数',
+        'attribute' => 'roomadmin',
+        'content' => function($model){
+            return \backend\models\Pc\Room::getRoomUser($model['id']);
+        }
     ],
     [
         'header' => '剩余时间',
         'attribute' => 'roomtime',
-        'options' => ['width' => '200px;'],
         'content' => function($model){
             return intval((strtotime($model['roomtime']) - time())/86400)."/天";
         }
@@ -53,13 +63,16 @@ $columns = [
     [
         'header' => '到期时间',
         'attribute' => 'roomtime',
-        'options' => ['width' => '200px;'],
-//        'format' => ['date', 'php:Y-m-d']
+    ],
+    [
+        'header' => '创建时间',
+        'attribute' => 'create_time',
+        'format' => ['date', 'php:Y-m-d H:i']
     ],
     [
         'class' => 'yii\grid\ActionColumn',
         'header' => '操作',
-        'template' => '{edit} {delete}',
+        'template' => '{edit} {delete} {show}',
         //'options' => ['width' => '200px;'],
         'buttons' => [
             'edit' => function ($url, $model, $key) {
@@ -73,7 +86,21 @@ $columns = [
                     'title' => Yii::t('app', '删除'),
                     'class' => 'btn btn-xs red ajax-get confirm'
                 ]);
-            }
+            },
+            'show' => function ($url, $model, $key) {
+                return "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#modal{$model['id']}' >显示</button>
+                        <div class='modal fade' id='modal{$model['id']}' tabindex='-1' role='dialog' aria-labelledby='myLargeModalLabel'>
+                          <div class='modal-dialog' role='document'>
+                            <div class='modal-content' style='text-align: center;padding-bottom: 100px;padding-top: 100px'>
+                              <h4>房间名：{$model['roomname']}</h4>
+                              <h4>账户：{$model['roomadmin']}</h4>
+                              <h4>密码：{$model['roompassshow']}</h4>
+                              <h4>房间号：{$model['roomid']}</h4>
+                            </div>
+                          </div>
+                        </div>";
+            },
+
         ],
     ],
 ];

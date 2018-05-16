@@ -2,9 +2,8 @@
 
 use yii\helpers\Html;
 use common\core\ActiveForm;
-use kartik\datetime\DateTimePicker;
+\backend\assets\RoomAsset::register($this);
 
-\backend\assets\RouteAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Route */
@@ -30,7 +29,10 @@ $this->params['title_sub'] = '添加房间';  // 在\yii\base\View中有$params�
         <?php $form = ActiveForm::begin([
             'options' => [
                 'class' => "form-aaa "
-            ]
+            ],
+            'enableAjaxValidation' => true, // 开启ajax验证
+            'enableClientValidation' => true,
+            'validationUrl' => \yii\helpers\Url::toRoute(['room-validate']),
         ]); ?>
 
         <?= $form->field($model, 'roomadmin')->iconTextInput([
@@ -42,7 +44,7 @@ $this->params['title_sub'] = '添加房间';  // 在\yii\base\View中有$params�
         ])->label('房间密码') ?>
 
         <?= $form->field($model, 'roomtime')->radioList([
-            1 => '1个月',2=>'2个月',3 => '3个月',6 => '6个月',12 => '12个月', 0 => '永久',-1 => '一天',
+            1 => '1个月',2=>'2个月',3 => '3个月',6 => '6个月',12 => '12个月', 0 => '永久',-1 => '一天',-2 =>'1小时',-3 => '2小时',-4 => '3小时'
         ])->label('房间期限') ?>
 
 <!--        --><?//=$form->field($model, 'roomtime')->widget(
@@ -65,7 +67,7 @@ $this->params['title_sub'] = '添加房间';  // 在\yii\base\View中有$params�
 
 
         <div class="form-actions">
-            <?= Html::submitButton('<i class="icon-ok"></i> 确定', ['class' => 'btn blue ajax-post', 'target-form' => 'form-aaa']) ?>
+            <?= Html::submitButton('<i class="icon-ok"></i> 确定', ['class' => 'btn blue ajax-post submitform', 'target-form' => 'form-aaa']) ?>
             <?= Html::button('取消', ['class' => 'btn']) ?>
         </div>
         <?php ActiveForm::end(); ?>
