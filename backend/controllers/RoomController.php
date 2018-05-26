@@ -216,7 +216,74 @@ class RoomController extends BaseController
 
         $dbpc->createCommand("INSERT INTO `fn_setting` (`id`, `roomid`, `setting_game`, `setting_wordkeys`, `setting_kefu`, `setting_cancelbet`, `setting_ischat`, `setting_tishi`, `setting_video`, `setting_qrcode`, `setting_people`, `setting_sysimg`, `setting_robotsimg`, `setting_robots`, `setting_robot_min`, `setting_robot_max`, `setting_robot_pointmin`, `setting_robot_pointmax`, `setting_templates`, `setting_flyorder`, `setting_downmark`, `display_custom`, `display_extend`, `display_plan`, `display_game`, `msg1_time`, `msg1_cont`, `msg2_time`, `msg2_cont`, `msg3_time`, `msg3_cont`, `flyorder_type`, `flyorder_user`, `flyorder_pass`, `flyorder_site`, `flyorder_session`, `flyorder_duichong`, `flyorder_pk10`, `flyorder_xyft`, `flyorder_cqssc`) VALUES(" . $room . ", " . $room . ", 'pk10', '垃圾|操|傻逼|黑|艹|妈|娘|逼|日', '欢迎光临，未来娱乐城。 上下分请添加客服微信', 'disable', 'open', 'open', '未来娱乐系统', '/upload/201710251508918115.png', 320, '/upload/201710251508917502.png', '/upload/201710251508917501.png', 0, 0, 15, 0, 300, 'old', 'false', '0', 'true', 'true', 'true', 'true', 0, '0', 0, '0', 0, '0', '0', '0', '0', '0', '0', 'false', 'false', 'false', 'false')")->execute();
 
+
         $dbpc -> createCommand() ->update("fn_room",["roomid" => $room],["id" => $room])->execute();
+
+        $updown_content = '500|800|1000|2000|3000';
+        $bet_content_1 = '12345/2/50|12345/3/59|12345/4/50|12345/5/60|12345/6/70|12345/7/50|12345/8/33|12345/9/44|12345/0/50|67890/1/88|67890/2/88|67890/3/100|67890/4/99|67890/5/88|67890/6/66|67890/7/88|67890/8/88|67890/9/98|67890/0/100|19852/2/77|157845/3/66|78901/9/67|45679/4/88|67890/2/100|13580/0/66|67890/4/100|和/341819/20|和/671117/20|和/15141312/20|和/大/30|和/双/30|和/小/30|和/789/20|和/45678/20|和/大/20|和/大/50|和/341819/20|1大200|2大58|3大200|4大147|5大200|6大200|7大170|8大230|9大200|0大200|1小200|2小200|3小95|4小150|5小200|6小123|7小200|8小169|9小200|0小96|1单120|2单222|3单65|4单230|5单200|6单89|7单200|8单200 9单200|0单200|1双188|2双200|3双200|4双200|5双200|6双200|7双211|8双200|9双200|0双158|1龙110|2龙260|3龙200|4龙240|5龙200 5虎137|4虎200|3虎200|2虎80|1虎180|345/1/100|12/2/150|89/3/100|234/4/100|890/5/100|1/6/480|567/7/160|123/8/220|9/9/200|345/0/100|12345/1/300|468/2/100';
+        $bet_content_2 = $bet_content_1;
+        $bet_content_3 = '1/12369/30|5/789/55|4/1564/50|9/50|4/40|虎250|总大100|总双150|12/45/60|532/64/44|4/4562/20|12/12322/55|2双150|5双100|单150|3小200|4/145656/60|5/60|3/40|龙300|虎180|123/45445/33|双223|单55|45/14511/20|1/89899/33|325/45/23|7/45|5/456456/22|7/80|3/753196/66|4/1632/40|4单77|3小220|4大240|总双80|小120|大350|4/45632332/42|124/52/60|5单150|龙145|虎200|45/5645/56|8/55|5/1235644455/20|4/545584/30|4双150|12/12323/42|5/456/75|4/789541/36|虎150|2/3256/111|5/58955/62|1/4568/76|5/56/200|2/3263236/55|4/569/55|12/2321212524/31|4/45897/66|54/56/53|4/456/150|7/33|双400|单160|4/85264/60|4/6/150|412/3232/35|4/789123/44|虎300|龙100|12/12/55|45/562/60|2/65|4/60|45/56/40|5/78956/50|4/5236/33|2单180|5双200|2/60|9/60|4/1245222542121/20|2/1245987/40|5/456/150|3/454566442145/21|5/89546/55|4/12456699866/22|单250|虎300|虎150|龙120|5/78989898454877/20|321/23/50|总大150|大400|小260';
+        $bet_content_4 = '单100|大单50|双120 大双100 |13.50 |14.50|小50 小单80 |11点70|双90|大160 大双110 |18点80 |16点60|小110 小双100 双150|单88 小单77|08点50|小双200 小200|单300 大单90|15点88|双250 小双99 极小120|04点80|大180 双110|小188|双120 小双100 |10草100|双300|大320|大双200 大280|13点50 |14点50 单50|大单50|10点50 |小110 小单120|单420|大双120 大120|小双88 小80|小111 小双138|大130 双140|单100 小单100|小双123双116|单200大250|大单250|双80大90| 8.50 小80|大100大双66|13草50|极大220大230大双100|极小150单50|小单50|单165 小150|大单110 大120|大双120 18草50|19草50|小110 小单90|大134|大200|大156 大单100|双280|大双90 大50|17草80 大单177|单200 大单200|小99 小双80|小77 小单66 11草50|小单100 14点50|大双100 双133|大350|18草100 单200 大单100|小100|大145 大双152|小236 小双173|大113 大单132 17点90|双142 14点100|单130 大单88|双120 大双188 13.50| 14.50|小130 小单140 11点70|双350|大200 大双50|小110 小双170|单200 小单121|06点70|单180 大单112|04点60|大180 双120|小399|双100 小双120 12草80|双290|大80|大双200 大50|13点50 14点50 单50 大单50|20点50 21点50 大120 大单100|大230|大双180 大170|小双110 小130|小180 小双140|大200 |双122|单170 小单160 |小170|小双120 双80|单88 大99|大单111|双113 大114|大双400 大400|双200 16草100|大双200 14.100|大单200 大200|小双300 小300|大500|单600|小600|双600|大单400 17草100|17草50 15草50 大单400|小100 双100 小双100';
+        $bet_content_5 = $bet_content_4;
+        $data = [];
+        $codes =  [1 => 'bjpk10',2 =>'mlaft',3 =>'cqssc',4 =>'bjkl8',5 => 'cakeno'];
+
+        // 添加方案5个
+        foreach ($codes as $type => $game){
+            $res = $dbpc ->createCommand(sprintf("select * from fn_robotplan2 where roomid = %d and `game` = %d",$room,$type))->queryOne();
+            if($res){
+                continue;
+            }
+            if($type == 1){
+                $data[] = [$type,$room,$updown_content,$bet_content_1,date("Y-m-d H:i:s")];
+            }
+            if($type == 2){
+                $data[] = [$type,$room,$updown_content,$bet_content_2,date("Y-m-d H:i:s")];
+            }
+            if($type == 3){
+                $data[] = [$type,$room,$updown_content,$bet_content_3,date("Y-m-d H:i:s")];
+            }
+            if($type == 4){
+                $data[] = [$type,$room,$updown_content,$bet_content_4,date("Y-m-d H:i:s")];
+            }
+            if($type == 5){
+                $data[] = [$type,$room,$updown_content,$bet_content_5,date("Y-m-d H:i:s")];
+            }
+        }
+
+        if(!empty($data)){
+            $dbpc ->createCommand()->batchInsert("fn_robotplan2",['game','roomid','updown_content','bet_content','addtime'],$data)->execute();
+        }
+
+        // 添加机器人
+        $datarobot = [];
+
+        // 添加方案5个
+        foreach ($codes as $type => $game){
+            $plan = $dbpc ->createCommand(sprintf("select * from fn_robotplan2 where roomid = %d and `game` = %d",$room,$type))->queryOne();
+            $plan = $plan['id'];
+            if($type == 1){
+                $name = 'pk10';
+            }elseif($type == 2){
+                $name = 'xyft';
+            }elseif($type == 3){
+                $name = 'xyft';
+            }elseif($type == 4){
+                $name = 'xy28';
+            }else{
+                $name = 'jnd28';
+            }
+
+            $datarobot[] = [$name.'_1','/upload/201805231527090892.jpg',$type,$room,3000,800,4000,$plan];
+            $datarobot[] = [$name.'_2','/upload/201805231527090906.png',$type,$room,3000,800,4000,$plan];
+            $datarobot[] = [$name.'_3','/upload/201805231527090919.png',$type,$room,3000,800,4000,$plan];
+            $datarobot[] = [$name.'_4','/upload/201805231527090933.jpg',$type,$room,3000,800,4000,$plan];
+            $datarobot[] = [$name.'_5','/upload/201805241527091267.png',$type,$room,3000,800,4000,$plan];
+        }
+
+        if(!empty($datarobot)){
+            $dbpc ->createCommand()->batchInsert("fn_robots2",['name','headimg','game','roomid','money','up_money','down_money','plan'],$datarobot)->execute();
+        }
 
     }
 
@@ -234,8 +301,18 @@ class RoomController extends BaseController
         $dbpc->createCommand("delete from `fn_lottery7` where roomid = {$room}")->execute();
         $dbpc->createCommand("delete from `fn_lottery8` where roomid = {$room}")->execute();
         $dbpc->createCommand("delete from `fn_lottery9` where roomid = {$room}")->execute();
+
+        $dbpc->createCommand("delete from `fn_robots2` where roomid = {$room}")->execute();
+        $dbpc->createCommand("delete from `fn_robotplan2` where roomid = {$room}")->execute();
+
         $dbpc->createCommand("delete from `fn_setting` where roomid = {$room}")->execute();
 
+    }
+
+    public function actionAjax_roomurl(){
+        $roomurl = Yii::$app->request->get('roomurl');
+        Yii::$app->cache->set('roomurl',$roomurl);
+        return json_encode(["code" => 200,"msg"=>"ok"]);
     }
 
 

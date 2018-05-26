@@ -14,6 +14,7 @@ $this->params['title_sub'] = '房间管理';  // 在\yii\base\View中有$params�
 
 /* 加载页面级别资源 */
 \backend\assets\TablesAsset::register($this);
+\backend\assets\RoomAsset::register($this);
 
 $columns = [
     [
@@ -88,10 +89,12 @@ $columns = [
                 ]);
             },
             'show' => function ($url, $model, $key) {
-                return "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#modal{$model['id']}' >显示</button>
+                $roomurl = Yii::$app->cache->get('roomurl');
+                return "<button type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modal{$model['id']}' >显示</button>
                         <div class='modal fade' id='modal{$model['id']}' tabindex='-1' role='dialog' aria-labelledby='myLargeModalLabel'>
                           <div class='modal-dialog' role='document'>
                             <div class='modal-content' style='text-align: center;padding-bottom: 100px;padding-top: 100px'>
+                              <h4>登录域名：{$roomurl}</h4>
                               <h4>房间名：{$model['roomname']}</h4>
                               <h4>账户：{$model['roomadmin']}</h4>
                               <h4>密码：{$model['roompassshow']}</h4>
@@ -113,8 +116,16 @@ $columns = [
         </div>
         <div class="actions">
             <div class="btn-group btn-group-devided">
+                <input type="text" class="form-control" value="<?= Yii::$app->cache->get('roomurl'); ?>" id="roomurl">
+            </div>
+            <div class="btn-group btn-group-devided">
+                <button type="button" class="btn red roomurl">保存</button>
+            </div>
+
+            <div class="btn-group btn-group-devided">
                 <?=Html::a('添加房间 <i class="icon-plus"></i>',['add'],['class'=>'btn green'])?>
             </div>
+
         </div>
     </div>
     <div class="portlet-body">

@@ -59,18 +59,18 @@ $zyk = array();
 $zrs= array();
 $zsf= array();
 foreach ($roominfo as $room){
-    $m = (int)get_query_val('fn_order', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
-    $m += (int)get_query_val('fn_pcorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
-    $m += (int)get_query_val('fn_sscorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
-    $m += (int)get_query_val('fn_jsscorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
-    $m += (int)get_query_val('fn_jssscorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
-    $m += (int)get_query_val('fn_mtorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
-    $z = (int)get_query_val('fn_order', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
-    $z += (int)get_query_val('fn_pcorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
-    $z += (int)get_query_val('fn_sscorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
-    $z += (int)get_query_val('fn_jsscorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
-    $z += (int)get_query_val('fn_jssscorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
-    $z += (int)get_query_val('fn_mtorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
+    $m1 = (int)get_query_val('fn_order', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
+    $m1 += (int)get_query_val('fn_pcorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
+    $m1 += (int)get_query_val('fn_sscorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
+    $m1 += (int)get_query_val('fn_jsscorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
+    $m1 += (int)get_query_val('fn_jssscorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
+    $m1 += (int)get_query_val('fn_mtorder', 'sum(`money`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and (`status` > 0 or `status` < 0)");
+    $z1 = (int)get_query_val('fn_order', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
+    $z1 += (int)get_query_val('fn_pcorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
+    $z1 += (int)get_query_val('fn_sscorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
+    $z1 += (int)get_query_val('fn_jsscorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
+    $z1 += (int)get_query_val('fn_jssscorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
+    $z1 += (int)get_query_val('fn_mtorder', 'sum(`status`)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `addtime` like '" . date('Y-m-d') . "%' and status >= 0");
 
     $allsf = (int)get_query_val('fn_upmark', 'sum(`money`)', "roomid = {$room['roomid']} and time like '" . date('Y-m-d') . "%' and status = '已处理' and type = '上分' and `jia` = 'false'");
     $allpeople = (int)get_query_val('fn_user', 'count(*)', "`roomid` = '{$room['roomid']}' and `jia` = 'false' and `money` > '0'");
@@ -79,7 +79,7 @@ foreach ($roominfo as $room){
     $zyk[] = [
         "roomid" => $room['roomid'],
         "roomname" => $room['roomname'],
-        "yk" => $z - $m
+        "yk" => $z1 - $m1
     ];
     $zrs[] = [
         "roomid" => $room['roomid'],

@@ -57,11 +57,8 @@ class RoomSearch extends Room
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query -> orderBy('roomtime');
-//        $query->andFilterWhere([
-//            'type' => $this->type,
-//            'time_type' => $this->time_type,
-//        ]);
+        $query -> orderBy('create_time desc');
+
         if($this -> roomid){
             $query ->andFilterWhere(['roomid' =>$this -> roomid ]);
         }
@@ -71,10 +68,6 @@ class RoomSearch extends Room
         if($this -> roomname){
             $query ->andFilterWhere(['like', 'roomname', trim($this->roomname)]);
         }
-//
-//        $query ->andFilterWhere(['like', 'remark', $this->remark]);
-
-
 
         return $dataProvider;
     }
