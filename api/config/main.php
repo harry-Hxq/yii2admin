@@ -67,7 +67,7 @@ return [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['index','v1/user','v2/index'],
+                    'controller' => ['index','v1/user','v1/pc','v2/index'],
                     'pluralize' => false, //是否启用复数形式，注意index的复数indices，我认为开启后不直观
 //                    'extraPatterns' => [
 //                        'POST login' => 'login'

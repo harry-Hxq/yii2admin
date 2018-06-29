@@ -18,7 +18,7 @@ use yii\filters\auth\QueryParamAuth;
 class IndexController extends ActiveController
 {
 
-    public $modelClass = 'common\models\User';
+    public $modelClass = 'api\models\User';
 
     public function behaviors()
     {
@@ -26,11 +26,14 @@ class IndexController extends ActiveController
         /* 设置认证方式 */
         $behaviors['authenticator'] = [
             'class' => QueryParamAuth::className(),
+            'optional' => [
+                'index',
+            ]
         ];
         return $behaviors;
     }
     public function actionIndex(){
-
+        return json_encode(['code'=>1]);
     }
 
 }

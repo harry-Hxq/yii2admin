@@ -59,6 +59,10 @@ class RoomSearch extends Room
         }
         $query -> orderBy('create_time desc');
 
+        if(Yii::$app->user->getId() == 11){
+            $query ->andFilterWhere(['admin_id' => Yii::$app->user->getId()]);
+        }
+
         if($this -> roomid){
             $query ->andFilterWhere(['roomid' =>$this -> roomid ]);
         }

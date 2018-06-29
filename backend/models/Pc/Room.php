@@ -36,7 +36,7 @@ class Room extends \common\modelsgii\Room
     public function rules()
     {
         return [
-            [['create_time','update_time'], 'integer'],
+            [['create_time','update_time','admin_id'], 'integer'],
             [['roomname','roomadmin','roomtime','roompass','agent','version','roompassshow'], 'string', 'max' => 255,'min' =>3],
 //            ['username', 'unique', 'targetClass' => '\frontend\models\User', 'message' => '用户名已存在.'],
             ['roomadmin', 'unique','targetClass' => '\backend\models\Pc\Room','message' => '房间账户已近存在.',]

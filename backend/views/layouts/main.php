@@ -107,7 +107,7 @@ $this->beginPage();
 <!--                                <li><a href="#"><i class="icon-envelope-open"></i> 收件箱<span class="badge badge-danger"> 3 </span></a></li>-->
 <!--                                <li><a href="#"><i class="icon-rocket"></i> 我的任务<span class="badge badge-success"> 7 </span></a></li>-->
                                 <li class="divider"> </li>
-<!--                                <li><a href="#"><i class="icon-lock"></i> 锁屏 </a></li>-->
+                                <li><a href="<?=Url::toRoute('room/user-edit')?>"><i class="icon-lock"></i> 重置密码 </a></li>
                                 <li><a href="<?=Url::toRoute('login/logout')?>"><i class="icon-key"></i> 注销 </a></li>
                             </ul>
                         </li>
